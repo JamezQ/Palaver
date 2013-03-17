@@ -1,0 +1,207 @@
+Welcome to the advanced guide, here the rest of the features of the
+features of the dictionary language are shown. 
+
+We will treat this as an extension of the first guide, so we will
+continue where you left off.
+
+####################################################
+PART 7, The LINE variable, advanced.
+####################################################
+
+The truth is a LINE variable actually has two forms.
+
+The first is (LINE name_of_variable), this form is easy, and only
+works to match the rest of the line.
+
+But what if you wanted to match something *inside* of a
+line. Something that has mutiple words. For example.
+
+please eat all the cake now
+don't throw that ball anymore
+please create a free society now
+
+How do we get the info:
+1. eat all the cake
+2. throw that ball
+3. create a free society
+
+out of those sentences.
+
+Like this:
+
+<please,don't> (LINE action < ><now,anymore>)
+  say "Got $action$"
+
+This is a form of the LINE type which can be described like this:
+
+(LINE name_of_variable stopping_expression)
+
+A stopping_expression is like any other expression, with the exception
+that it CANNOT contain variables. 
+
+So this
+
+(LINE var dogs are (LINE var))
+
+is not allowed. 
+
+A LINE with a stopping expression will continue to look for a match
+until the stopping_expression is matched. Then the system will
+continue to check after where the stopping_expression matched. The
+variable is all the next until but not including the start of the
+stopping_expression.
+
+A stopping_expression may contain spaces, and it starts on the first
+non-space after the varaible name.
+
+This is why the < > in
+
+(LINE action < ><now,anymore>) 
+
+is nessicary. This allows the stopping_expression to catch a space at the
+beggining.
+
+if we did:
+
+<please,don't> (LINE action <now,anymore>)
+
+and said the sentence:
+please eat all the cake now
+
+action would contain "eat all the cake "
+notice the space at the end.
+
+So when you don't want that, include a < > at the start of your
+stopping_expression.
+
+This may seem superfluous, but having it allows for times when you
+*don't* want to match a space first. For example.
+
+(LINE person ')s cake.
+  say "The cake is owned by $person$"
+
+This allows a person to say "sarah's cake" and catch just "sarah".
+
+if you use LINE with a stopping_expression, and the stopping
+expression is *not* found before the line. The line will *not* match.
+
+so if we had
+
+<please,don't> (LINE action <now,anymore>)
+
+and said: "please eat all the cake" this would *not* be considered a
+match.
+
+The solution to this is in the next part
+
+####################################################
+PART 8, Optional stopping expressions.
+####################################################
+
+You may, intuitively, think the answer is:
+
+<please,don't> (LINE action [now,anymore])
+
+In fact this works, but why? In theory [now,anymore] will match
+nothing, so end_expression should immediately match?
+
+The answer is yes, but this is simply an exception built into the
+system because it makes sense and is useful. 
+
+Basically , if an end_expression is only composed of optional
+expressions, it will stop at the first match OR happily match at the
+end of the line.
+
+Notice that ANYTHING in [] is an optional expression, even if it
+contains <>. [<j,J>ames] will match James,james, or nothing.
+
+####################################################
+PART 9, list variables
+####################################################
+
+Lets say that you want a variable for what the user said, but be very
+restrictive in what this user accepts.
+
+As an example.
+
+
+when will it be Friday
+when will it be Saturday
+when will it be Sunday
+when will it be Monday
+
+and so on for every day of the week, how would you match them all?
+
+Here is the answer.
+
+when will it be (WORD<<Mon,Tues,Weds,Thurs,Fri,Satur,Sun>day> day)
+
+This is the form we are looking at:
+
+WORD<list,of,matches>
+
+In this case the dictionary will look for speech saying one of those
+matches, and if it finds it, it will put that into that variable. If
+it doesn't find it, the speech itself will not match.
+
+only a WORD<> may be used for a list variable, WORD[] is not allowed,
+if you think about it you should understand why.
+
+using WORD<> a WORD type may even contain multiple spaces.
+
+WORD<a dog,a cat,some long sentence> 
+
+is a valid use and the variable you named will contain the expression
+that is matched if it matched anyway.
+
+LINE infant may also use LINE<> but in this case it is exactly the
+same as using WORD<>. You may use whatever you prefer.
+
+####################################################
+PART 10, special preset variables
+####################################################
+
+There are a few variables that are automatically set that you can use
+in the COMMAND TO RUN line.
+
+1. SPEECH
+  This is the entire speech that the person said. An example
+of where this is useful is a question answering system.
+
+<why,who,what> (LINE question)
+
+You want to make sure they are asking a question, so you start with
+the expression <why,who,what> , but the problem is, if they ask.
+
+who is Thomas Jefferson
+
+$question$ will be "is Thomas Jefferson"
+
+The solution is to use $SPEECH$. Like this:
+
+<why,who,what> (LINE question)
+  answer-question "$SPEECH$"
+
+In this case if I ask "what is 10 times 10"
+
+The full question "what is 10 times 10" will be sent to the answer
+system.
+
+Also as you can see, you can use LINE to match, and not use the
+variable.
+
+
+2. USER
+
+This variable will contain the name of the user, either from their
+configuration file, the USER environment variable, or if neither is
+found. It will default to simply "user".
+
+The use case anytime you want to address the user by name, for
+example.
+
+hello computer
+  say "hello $USER$"
+
+
+

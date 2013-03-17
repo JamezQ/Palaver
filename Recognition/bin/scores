@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+import json, os, urllib2, time, datetime, argparse
+argparser = argparse.ArgumentParser(description='Check Sports Scores')
+argparser.add_argument('league', type=str,help='League to check')
+from HTMLParser import HTMLParser
+from htmlentitydefs import name2codepoint
+# e.g. http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport=MLB&period=20120929
+url = 'http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport=%s&period=%d'
+root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+class MyHTMLParser(HTMLParser):
+
+	def handle_starttag(self, tag, attrs):
+		if tag == 'visiting-team':
+			for attr in attrs:
+				if attr[0] == "display_name":
+					self.returnData['visitingTeam'] = attr[1]
+				elif attr[0] == 'score':
+					self.returnData['visitingScore'] = attr[1]
+		elif tag == 'home-team':
+			for attr in attrs:
+				if attr[0] == "display_name":
+					self.returnData['homeTeam'] = attr[1]
+				elif attr[0] == 'score':					
+					self.returnData['homeScore'] = attr[1]
+		elif tag == "gamestate":
+			for attr in attrs:
+				if attr[0] == 'status':
+					self.returnData['status'] = attr[1]
+				elif attr[0] == 'display_status1':
+					self.returnData['status1'] = attr[1]
+				elif attr[0] == 'display_status2':
+					self.returnData['status2'] = attr[1]
+
+def go(league):
+	yyyymmdd = int(datetime.datetime.now().strftime("%Y%m%d"))
+	try:
+		f = urllib2.urlopen(url % (league, yyyymmdd))
+		jsonp = f.read()
+		f.close()
+		json_str = jsonp.replace('shsMSNBCTicker.loadGamesData(', '').replace(');', '')
+		json_parsed = json.loads(json_str)
+		text = "\""+league + " Scores\" "
+		for game_str in json_parsed.get('games', []):
+			parser.returnData = {}
+			parser.feed(game_str)
+			gameData = parser.returnData
+			if gameData['status'] == "Final":
+				if gameData['status1'] == "Final":
+					gameStatus = "Final"
+				else:
+					gameStatus = "Final - %s" % gameData['status1']
+			else:
+				gameStatus = gameData['status1'] + " " + gameData['status2']
+			text = text + "\"%s at %s:  %s - %s  %s\" " % (gameData['visitingTeam'],gameData['homeTeam'],gameData['visitingScore'],gameData['homeScore'],gameStatus)
+
+	except Exception, e:
+		print e
+ 	return text
+
+parser = MyHTMLParser()
+args = argparser.parse_args()
+result = go(args.league)
+os.system(root+"result "+result)

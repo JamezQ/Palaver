@@ -1,0 +1,10 @@
+name = TotemPlugin
+version = 1.0
+file = totem
+description = Control Totem Media Player
+author = Brett Mayson
+actions =
+play video,plays the loaded video
+pause video,pauses the video if it is playing
+next video,plays the next video in the playlist
+previous video,plays the previous video in the playlist

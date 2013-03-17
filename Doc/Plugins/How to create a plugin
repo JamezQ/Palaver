@@ -1,0 +1,60 @@
+Creating plugins is very easy to do.
+
+Plugins consist of three files, a plugin.info file, an actions.dic file and an executable
+
+The plugin.info will contain information about the plugin
+An example plugin.info is:
+
+	name = TotemPlugin							*Any spaces will be removed, Music Launcher will be installed as MusicLauncher
+	version = 1.0								*This line must be either an interger (1, 6, 10) or a float (1.1, 2.4, 4.2)
+	file = totem								*The name of the file that will be called
+												*If your plugin doesn't need a file enter NONE
+	description = Control Totem Media Player	*This is the description that will be displayed to the user before installation
+	author = Brett Mayson						*The creator of the Plugin
+	actions =									*Actions the plugin adds
+	dependencies = totem						*This is an optional line. If added the user will be notified of any programs they need
+	play video,plays the loaded video			*"play video" is what the user says, "plays the loaded video" is what the plugin will do 
+	pause video,pauses the video if it is playing
+	next video,plays the next video in the playlist
+	previous video,plays the previous video in the playlist
+
+
+
+
+
+The code for the actions will be stored in two files, an executable and a dictionary file.
+The dictionary file contains what voice commands will be sent to your plugin.
+	<p,P>lay <v,V>ideo			*When the user says "Play Video", '--play' will be sent to the execuatable named totem
+	  totem '--play'
+	<pause,POS> <v,V>ideo
+	  totem '--pause'
+	<n,N>ext <v,V>ideo
+	  totem '--next'
+	<p,P>revious <v,V>ideo
+	  totem '--previous'
+
+
+
+Files will be passed variables as normal, here is the totem contents:
+
+	#!/bin/bash
+
+	totem "$1"
+
+
+It recieves '--play' as a variable if the user were to say "Play Video"
+The executable file can be written in different languages. Python and Bash work well.
+
+
+
+
+After this you should have three files:
+	plugin.info
+	actons.dic
+	And the executable (In our example this would be toten)
+
+You can now compress them into a .tar.gz file and rename the extension to .sp
+
+Leaving us with something like totem.sp
+You can see this plugin in the Example Plugins directory
+

@@ -1,0 +1,9 @@
+name = ScreenPlugin
+version = 1.2
+file = screen
+description = Turn screen on and off (for GNOME desktop environments).
+author = Antonis Kalou
+actions = 
+screen on, turns on the screen
+screen off, turns off the screen
+

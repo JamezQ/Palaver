@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This should use the default browser
+
+
+# Allows it to accept any url
+if echo "$1" |egrep "^http" >/dev/null 2>&1;then
+    xdg-open "$1" &
+else
+    xdg-open http://"$1" &
+fi
+

@@ -1,0 +1,48 @@
+Dictionary size: How many lines the dictionary contains.
+Single match speed: Time to match speech that is not similar to other matches.
+almost match speeed: Time to match speed very similar to other matches.
+
+All speeds are avg of 10 runs.
+All time is in seconds.
+
+
+| Dictionary size | Single match speed | almost match speed |
+|-----------------+--------------------+--------------------|
+| 10,000          |              .0030 |              .0035 |
+| 20,000          |              .0052 |              .0063 |
+| 30,000          |              .0085 |              .0086 |
+| 40,000          |              .0099 |              .0103 |
+| 50,000          |              .0122 |              .0122 |
+|-----------------+--------------------+--------------------|
+| 100,000         |              .0200 |              .0210 |
+| 200,000         |              .0367 |              .0396 |
+| 300,000         |              .0540 |              .0571 |
+| 400,000         |              .0727 |              .0757 |
+| 500,000         |              .0901 |              .0937 |
+|-----------------+--------------------+--------------------|
+| 1,000,000       |              .1768 |              .1855 |
+| 2,000,000       |              .3513 |              .3732 |
+| 3,000,000       |              .5229 |              .5537 |
+| 4,000,000       |              .6974 |              .7431 |
+| 5,000,000       |              .8755 |              .9232 |
+|-----------------+--------------------+--------------------|
+
+
+
+For full disclosure, here are the commands I ran.
+
+Single match:
+ time for i in {1..10};do ./dictionary "the real command" modes/lentest.dic >/dev/null;done
+Almost match:
+ time for i in {1..10};do ./dictionary "open real command" modes/lentest.dic >/dev/null;done
+
+I then took the output and divided by 10. Giving the average for a single run.
+At the end, the dictionary I used was over 103 Megs. 
+And the time for a single run was approaching 1 second. 
+    
+There is info about my system specs in proc_cpuinfo.txt and my_uname.txt.
+You should be able to see my system is nothing spectacular, this was also
+done on normal hard drive, not a SSD.
+
+The dictionary I used was lentest.dic, avaiable in this directory.
+WARNING: It will expand to 103 Megabytes.

@@ -1,0 +1,12 @@
+name = FileBrowser
+version = 1.1
+description = Launch file folders
+file = file-browser
+author = James McClain
+actions = 
+open home,Opens the user's home folder
+open documents,Opens the user's documents folder
+open music,Opens the user's music folder
+open videos,Opens the user's videos folder
+open pictures,Opens the user's picture folder
+open downloads,Opens the user's downloads folder

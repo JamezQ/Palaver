@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Setup speech recognition for the person.
+
+DIR="$(pwd)"
+
+echo Assuming all files are in "'$DIR'"
+
+touch Recognition/dictionary.c
+cd Recognition
+make
+cd ..
+
+echo "Done, you will have to setup the hotkey yourself."
+
+
+

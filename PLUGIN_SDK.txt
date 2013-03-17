@@ -1,0 +1,98 @@
+Here I discuss what I envision for people making plugins:
+
+A Goal: For all the features we add to the SDK it should still be
+possible to make a plugin without using it. And by possible I mean,
+it's not insane to do so.
+
+
+person runs create_plugin Test
+
+And this directory structure is created:
+
+Test
+ plugin.info 
+ bin
+  links_to_existing_bins
+ config
+  links_to_existing_configs
+ modes
+  main.dic // empty except for comments on what to do maybe
+
+optionally, a person can simply create this themselves, however this
+will make it easy if there command plans to use any other commands not
+part of itself.
+
+Now info on how a person will build their plugin
+
+If you see
+// Automatically done 
+this means that the plugin makes does not have to put this in, it can
+be automatically generated when the plugin is "compiled"
+
+
+plugin.info contains
+Name = Test // Automatically done
+authors = James McClain // Partially automatically done.
+version = 1.0 // Automatically done
+bin = goto, open_file // Automatically done
+// bin is all the other commands it requires to run, these might be in
+// other plugins.
+depends = espeak, curl, g++ // Automatically done
+// All of the commands it requires to run that are part of the
+// operating system, not speech packages.
+provides = runtest // Automatically done
+// The extra commands that this will provide.
+description = Runs a test command. By the way, this description can
+span mutiple lines.
+actions =
+run test, runs a test
+other action, we can have mutiple actions
+
+Now lets see the files that the person in Test will create, and see
+how all of that stuff will be auto-generated.
+
+
+The runtest file:
+---------------------------------------
+#!/bin/bash
+
+#@author James McClain
+#@usage runtest <argument>
+#@description I have no idea what this 
+#@description does
+
+
+# Non special comment
+espeak "what is this command doing"
+
+curl "http://www.google.com" 2>/dev/null
+g++ --help 2>/dev/null
+
+bin/open_file lol.txt
+
+exit 0
+----------------------------------------
+The main.dic file:
+----------------------------------------
+<run,start> test
+  runtest lol
+other action
+  goto "what.com"
+----------------------------------------
+
+The, when build_plugin is done, all of the scripts will be looked at,
+and it will look at all commands in them, and try to figure out what
+the script will need. It will do the same with main.dic COMMAND
+lines. And from all of that it will deduce what is needed.
+
+
+when installing:
+Look for all depends using which, make sure they exist.
+Look for all the bin, and make sure they exist.
+Show the description, and the commands it will add.
+
+Ask the user if they want to install.
+
+If yes, install.
+
+

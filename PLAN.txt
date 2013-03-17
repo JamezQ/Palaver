@@ -1,0 +1,113 @@
+I have decided that before finishing everything in BEFORE_RELEASE.txt,
+we will have an open beta. Before we have an open beta, there are a
+few things to get done.
+
+ALL of these need to be done before we switch to an open beta on
+launchpad.
+
+This list is not in order.
+
+* Create the project on launchpad.
+* Add all the contributors to the project team.
+* Create a PPA that people can use to download and use the latest
+  stable version.
+* Create a trunk branch for developers to use.
+* Start restructuring how the application works, start treating the
+  git repo as the install directory and create a public directory.
+* Make a simple gui for installing plugins 
+* Allow plugins to be installed to the system directory or the users
+  directory
+* Make sure that at least for users on the most recent ubuntu version,
+  the application automatically works
+* Not that on update, if we are adding some default actions, we need
+  to be able to do so without removing any custom ones installed. This
+  means *not* replacing the plugins file.
+* Some simple man pages.
+* Plugins need to start using config folders more
+
+
+
+Any possiblity some other things, I will be giving more info on some
+items:
+
+STRUCTURE OF PERSONAL DIR:
+OPTION 2: (I think we go with this one)
+ personal.dic
+ personal.sed
+ CONFIG
+ CONTEXT // A link to the context dictionary	
+ bin
+  all
+  executables
+ config
+  all
+  config
+  folders
+ modes
+  main.dic <not a link>
+  dictation.dic
+  other_mode.dic
+ tmp
+  result
+  pycmd_record
+  speech.flac
+  speech.pid
+
+STRUCTURE OF SYSTEM DIR:
+ hotkey
+ hotkey_switch
+ hotkey_X
+ 
+ recognize
+ dictionary
+
+ install_plugin
+ 
+ skeleton
+   <skeleton of user directory (default stuff)>
+   // This will be copied to user dir if it does
+   // exist
+
+STRUCTURE OF PLUGIN DIR:
+ plugin.info (Or whatever we call it)
+ bin
+  all_of
+  the_plugin
+  executables
+  +
+  links
+  to
+  other
+  executables
+ config
+  folder
+  for_each
+  executable
+  +
+  links
+  to
+  other 
+  configs
+ modes
+  main.dic
+  other_mode.dic
+
+I WILL WRITE MORE ON PLUGINS IN PLUGIN_SDK.txt
+
+This concludes PLAN.txt, hopefully it will not take long for these
+changes to happen.
+
+------------------------------
+Thoughts:
+
+dictionary.c might be rewritten, it is already very fast, but there
+are a few optimizations to make.
+
+Our fuzzy matching is about matching speech, not syntax, that is why I
+would like to consider matching regardless of case. 
+
+Steal code from vox-laucher
+
+make my code GPL v3
+
+

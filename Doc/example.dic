@@ -1,0 +1,60 @@
+# This is an example dictionary to show you all the features
+# of the language.
+# 
+# A review of features...
+# 
+# Anything in <> is required
+# Anything in [] is optional
+# 
+# Both <> and [] can have multiple choices in them,
+# for example [dog,cat] will match dog, cat, or nothing at all.
+# 
+# There are two variable types "Word" and "Line".
+# 
+# Word is formatted like this (Word varname)
+# 
+# A Word matches characters until it hits a space or the end of the line,
+# it must have something to match.
+# 
+# The variable can be put in the output sentence like this $varname$
+# with a $ both at the start and back.
+# 
+# Line is formatted like this (Line varname [optional stopping expression])
+# 
+# Without the stopping expression, it will match everything until the
+# end of the line.
+# 
+# With the stopping expression, it matches everything until that expression.
+# 
+# Also $SPEECH$ is a special variable that puts the whole speech in the 
+# output.
+# 
+# That's the basics! Look below for examples.
+
+
+a basic sentence
+  a basic answer
+
+testing matching <dog,cat>
+  you said dog or cat!
+[this ]can be used at the start or ending[ part].
+  Yes indeed.
+<[<a,A>lso ,by the way ]<t,T>hese [will ]work recursively>
+  Total inception!
+
+# Note that because "a basic sentence" comes before it.
+# it will match that and return "a basic answer"
+# Try other words.
+a basic (Word variable)
+  a basic $variable$
+(Line var ')s will match dog's or anything else
+  Yup, it just matched $var$.
+
+[what is ][the ]definition of (Word word)
+  find-def-of $word$
+(Word word) definition
+  find-def-of $word$
+
+(Word<match,one,of,these> var) please.
+  and return $var$ as a variable.
+

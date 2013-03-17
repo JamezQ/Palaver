@@ -1,0 +1,7 @@
+name = SportsScores
+version = 1.0
+file = scores
+description = Display Sports Scores
+author = Brett Mayson
+actions =
+<league> scores,Shows scores for the specified league (NBA, NHL, NFL)

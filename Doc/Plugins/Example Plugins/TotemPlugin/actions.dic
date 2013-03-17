@@ -1,0 +1,8 @@
+<p,P>lay <v,V>ideo
+  totem '--play'
+<pause,POS> <v,V>ideo
+  totem '--pause'
+<n,N>ext <v,V>ideo
+  totem '--next'
+<p,P>revious <v,V>ideo
+  totem '--previous'

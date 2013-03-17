@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# TODO, make this use the mode, context and custom sed script
+
+# Try to run a command in ./Recognition/bin with useful errors.
+function run_command() {
+    eval "./Recognition/bin/$1"
+
+    if [ $? != 0 ];then
+	./Recognition/bin/result Error "There was an error while running:" \
+	"$1" ""
+	exit 1
+    fi
+}
+
+cd $(dirname $0)
+
+read mode < MODE
+
+speech="$1"
+
+# Use sed scripts here.
+if [ -z "$speech" ];then
+    echo "Speech unable to be transcribed."
+    ./Recognition/bin/result "Speech unable to be transcribed." "" ""
+    exit 1
+fi
+
+rm Microphone/result 2>/dev/null
+
+
+if [ -e "$HOME/.USR.d/personal.dic" ];then
+    COMMAND=$(./Recognition/dictionary "$speech"\
+ "$HOME/.USR.d/personal.dic")
+
+    EXIT=$?
+    if [ "$EXIT" == 0 ];then
+
+	run_command "$COMMAND"
+
+	exit 0
+    fi
+    if [ "$EXIT" != 2 ];then
+	echo "There is an error in $HOME/.USR.d/personal.dic"
+    fi
+fi
+
+
+COMMAND=$(./Recognition/dictionary "$speech" "./Recognition/modes/${mode}.dic")
+
+EXIT=$?
+
+if [ "$EXIT" == 0 ];then
+    run_command "$COMMAND"
+    exit 0
+elif [ "$EXIT" == 2 ];then
+    ./Recognition/bin/result Error "'$speech'" "is not a recognized command" ""
+
+else 
+    echo "There is an error in ${mode}.dic"
+    ./Recognition/bin/result Error "There was an error while reading ${mode}.dic" \
+	"$COMMAND" ""
+fi

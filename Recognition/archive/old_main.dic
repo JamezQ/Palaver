@@ -1,0 +1,53 @@
+# This is the old main dictionary, for those that may be curious
+
+<say,speak> (Line words)
+  say $words$
+<type,write> (Line words)
+  type $words$\\r
+copy[ this]
+  type \\Cc
+paste[ this]
+  type \\Cv
+#ask (Line Question)# Do this later, for now just make the questions.
+#  ask $Question$
+#
+# CHEATING BELOW
+who['s][ is] the <p,P>resident[ of][ the] United States
+  result Answer Barack Obama ""# "" at the end means no picture.
+who['s][ is] the creator[ of][ this] program
+  result Answer James McClain ""
+how big is a megabyte
+  result Answer "1024 KB" ""
+<open,start,run> <g,G>oogle <c,C>hrome
+  open google-chrome
+<open,start,run> <f,F>irefox
+  open firefox
+<g,G>o[ ]to (Line site)
+  goto $site$
+<<s,S>earch,<g,G>oogle> (Line question)
+  goto http://www.google.com/search?hl=en&q=$question$
+<<w,W>olfram,wolf RAM>[ <a,A>lpha] (Line question)
+  goto http://www.wolframalpha.com/input/?i=$question$
+
+
+# some more cheating
+open documents
+  open nautilus ~/Documents
+open music
+  open nautilus ~/Music
+open home
+  open nautilus ~/
+play <a,A>merican <p,P>ie
+  open rhythmbox ~/Music/american_pie.mp3
+dictation mode
+  mode dictation
+
+note to self (Line rest)
+  note_to_self $rest$
+
+how cool is this
+  say pretty cool
+
+
+(Line catch_all)
+  result Error "'""$catch_all$""'" "is not a recognized command." ""

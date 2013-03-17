@@ -1,0 +1,81 @@
+These are the things we need to implement/fix before the release, I
+will keep this list updated.
+
+I will also put your name next to an item if you choose to work on
+that item.
+
+If it doesn't have name next to it, 
+
+nTO BE DONE BEFORE THE RELEASE: (wishlist after)
+
+ * Continuous mode. 
+   Look for any speech, and send it to be recognized as soon as it is
+   detected that speech has stopped.
+
+ * Auto-stop mode.
+   The user presses the hotkey to start speech, but send it as soon as
+   it is detected that speech has stopped.
+
+ * Activate mode.
+   First detect "activation noise", the person can say anything they
+   want from "hey" to "wake up", it is just looking for noise. Once it
+   detects that, turn on a yellow mic, then when the noise has
+   stopped, turn on the green mic. From here Auto-stop.   
+
+ * a dict command [JamezQ]
+   This command will send the argument to be recognized by another
+   dictionary. It will be in this format,
+   dict <dir> <dictionary> <command>, with dir being a directory in
+   config, not the full path. And dictionary being the dictionary name
+   without .dic.
+
+ * A way to play music by name, without hardcoding. Just like
+   rhythmbox would.
+
+ * A context dictionary, for example, someone says a command that is
+   in mutiple parts. If the command asks something 'Is this correct?',
+   the person can simply say 'yes' and because the context is set, the
+   program knows what they mean.
+
+ * A personal dictionary that will be checked before the mode
+   dictionary, but still after the context.
+
+ * Modes should be able to use sed scripts to replace words
+   automatically.
+
+ * There should be a personal sed script too.
+
+ * A real ask command, with the ability to have a question dictionary,
+   allowing people to ask questions like "what is the current cpu
+   usage", as well as to query google, wolfram, or MIT start.
+
+ * If possible, try to find a way to open programs without a
+   dictionary, the dash can do it by name, we should too. That said, a
+   program dictionary is still nice, to recognize things like "a file
+   browser" or "a terminal" or other common terms that are not
+   actually program names.
+
+ * A nicer tutorial to implementing commands in the dictionary
+   language, and a overall tutorial about how to extend the program.
+
+ * A better recognition of if a command ran sucessfully, right now if
+   a command is recognized, but the script has a bug, it simply says
+   "done" and does nothing.
+
+ * I think macro recording would be nice, start a macro with "Record
+   macro" then stop a macro with the same key used for the
+   hotkey. After this a macro can be automatically called with "call
+   last macro" or it can be saved forever and a the system could be
+   set to recognize it.
+ 
+ * Make all dictionaries besides the personal dictionary made up of
+   plugins.
+ 
+WISHLIST (To take priority *after* the release)
+
+Add wishlist stuff here
+
+* An emacs dictionary mode to edit .dic files.
+  This mode can allow testing of matches on the fly, as well as
+  showing any unmatched < and [. And of course simple syntax
+  highlighting. 

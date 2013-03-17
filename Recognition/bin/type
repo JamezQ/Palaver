@@ -1,0 +1,3 @@
+#!/bin/bash
+
+xvkbd -text "$1"

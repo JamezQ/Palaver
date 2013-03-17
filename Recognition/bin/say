@@ -1,0 +1,4 @@
+#!/bin/bash
+
+espeak "$1"
+

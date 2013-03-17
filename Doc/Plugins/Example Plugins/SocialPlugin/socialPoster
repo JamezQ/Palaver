@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+from gi.repository import Gtk
+from gi.repository import GwibberGtk
+ 
+class GwibberEntry:
+    def __init__(self):
+        window = Gtk.Window()
+        window.set_title("Social Status Updater")
+        window.set_icon_name("gwibber")
+        window.resize(400, 150)
+        entry = GwibberGtk.Entry()
+        window.add(entry)
+        window.show_all()
+        window.present()
+        window.connect("destroy", self.on_close)
+ 
+    def on_close(self, w):
+        Gtk.main_quit()
+ 
+ge = GwibberEntry()
+Gtk.main()

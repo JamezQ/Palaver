@@ -1,0 +1,7 @@
+name = GoogleMaps
+version = 1.0
+file = gmaps
+description = Search places at Google Maps
+author = Pablo May
+actions =
+where is <place>, Look for a place at Google Maps

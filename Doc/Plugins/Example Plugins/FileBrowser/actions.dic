@@ -1,0 +1,12 @@
+open documents
+  file-browser 'xdg-user-dir DOCUMENTS | xargs nautilus'
+open music
+  file-browser 'xdg-user-dir MUSIC | xargs nautilus'
+open home
+  file-browser 'xdg-user-dir | xargs nautilus'
+open videos
+  file-browser 'xdg-user-dir VIDEOS | xargs nautilus'
+open pictures
+  file-browser 'xdg-user-dir PICTURES | xargs nautilus'
+open downloads
+  file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'

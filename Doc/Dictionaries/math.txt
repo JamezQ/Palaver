@@ -1,0 +1,87 @@
+So, not only is the syntax of dictionary better looking then writing
+the same sentence many times. It's actually more efficient. I did not
+realize this at first. Here is the reason.
+
+<a,b,c>
+
+Matches the lines.
+a
+b
+c
+
+So a line-by-line check will have to check three characters.
+My program, ignoring syntax and syntax checking. Would have to also
+check 3 characters. (If you include the syntax and syntax checking, my
+program will check more. But just like 3^x + 3x, soon the 3x becomes
+insignifigant.)
+
+<a,b,c><a,b,c>
+
+matches the lines.
+1. aa
+2. ab
+3. ac
+4. ba
+5. bb
+6. bc
+7. ca
+8. cb
+9. cc
+
+So the line-by-check check will check max 9+3 characters, but mine will only
+ever need to check max 6 characters.
+
+Below is a table that should illustrate the efficientcy.
+
+If we follow the same patter of adding <a,b,c>
+Based on forula. 3^(x)+3^(x-1).....+3^(x-x) for Line-by-Line checking
+and the forula 3x for dictionary checking.
+
+
+Approx char compasisons on:
+| Number of <a,b,c>'s | Line-by-line checker | Dictionary |
+|                   1 |                    3 |          3 |
+|                   2 |                   12 |          6 |
+|                   3 |                   39 |          9 |
+|                   4 |                  120 |         12 |
+|                   5 |                  363 |         15 |
+|                   6 |                 1092 |         18 |
+|                   7 |                 3279 |         21 |
+|                   8 |                 9840 |         24 |
+|                   9 |                29523 |         27 |
+|                  10 |                88572 |         30 |
+|                  11 |               265719 |         33 |
+|                  12 |               797160 |         36 |
+|                  13 |              2391483 |         39 |
+|                  14 |              7173352 |         42 |
+|                  15 |             21523359 |         45 |
+|                  16 |             64570080 |         48 |
+|                  17 |            193710243 |         51 |
+|                  18 |            581130732 |         54 |
+|                  19 |           1743392199 |         57 |
+|                  20 |           5230176600 |         60 |
+
+As the "fuzzyness" increases, the checks needed for checking all
+possible lines increases exponentially. While the dictionary is only
+Linear.
+
+Now, adding all syntax of the language, it's possible for a
+Line-by-Line check to be more efficient until there are more then 4
+fuzzy expressions. (I haven't calculated the exact number.)
+
+But the point is at those levels the differences are hardly in the
+hundreds, and when C is at work the time difference is
+negligible. However when as more and more "fuzziness" is adding to
+more and more sentences. The amount of checking a Line-by-Line
+checkers would have to do will be inevitable more then a simple .dic
+dictionary. More infact at such numbers as to make c seem slow.
+
+Now this is not unique to my system, as checking lines agaist a regex
+would be the same. The difference is that my system is more simple
+then regex and should be much easier to learn. Also, I believe it is
+more suited to matching speech, which is what it is programed for. Then
+a regex would, as a regex is made to match patterns.
+
+
+Anyway, this is all just a tangent and I don't vouch for the accuracy
+of any of this, if you see any problems with it, please tell me.

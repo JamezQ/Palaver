@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Change modes.
+
+
+if [ -z "$1" ];then
+    1="main" # Default mode is main
+fi
+
+read mode < MODE
+
+echo "$1" > MODE
+
+if [ "$1" != "$mode" ];then # we changed modes
+    ./Recognition/bin/result "Mode Changed" "You are now in '$1' mode." ""
+fi
+

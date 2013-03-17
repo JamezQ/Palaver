@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+# This should change based on language.
+# lang=es or something.
+# Multiple results
+#URL="http://www.google.com/speech-api/v1/recognize?lang=en&client=chromium&maxresults=6"
+URL="http://www.google.com/speech-api/v1/recognize?lang=en&client=chromium"
+
+if [ -z "$1" ];then
+    echo ""
+    exit 1
+fi
+
+wget -qO- --post-file "$1" --header 'Content-type: audio/x-flac; rate=16000' "$URL" > result.json
+
+RESULT="$(cat result.json | sed 's/^[^[]*\[{\"utterance\":\"\([^\"]*\)\".*/\1/')"
+
+echo "$RESULT"

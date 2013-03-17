@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+
+cd $(dirname $0) # Current directory
+
+# To think of it, it should be the only places we call config too, if other
+# scripts need those variables, they should be exported.
+. CONFIG
+
+if [ -z "$HOTKEY" ];then
+    HOTKEY="switch"
+fi
+
+if [ "$HOTKEY" == "switch" ];then
+    ./hotkey_switch
+fi
+
+# We would check for other possibilities below.

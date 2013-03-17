@@ -1,0 +1,9 @@
+#!/bin/bash
+
+eval "$@ "&
+
+if which "${1%% *}" ;then
+    :
+else
+    exit 1 # It's not a command
+fi

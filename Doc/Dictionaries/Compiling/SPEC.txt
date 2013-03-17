@@ -1,0 +1,41 @@
+Is it worth it to implement dictionary compiling?
+
+Right now, dictionaries are *very* fast. So fast, infact, that until we
+pass 500,000 lines in a dictionary, any optimizations made would be
+undetectable by a human. (Based on the average human seeing anything
+lasting under 100 ms as apearing instant, see
+Doc/Dictionaries/Speed/speed_of_dictionary.txt for speed benchmarks)
+
+The speed of the dictionary comes from the fact that it is a very
+simple language, and very specialized in it's purpose. 
+
+Also keep in mind that 500,000 lines in a dictionary does *not* mean
+"500,000 possible things it can match", but 500,000 *fuzzy* lines,
+which means that, with an average of 3 fuzzy expressions per line, the
+dictionary will actually be able to match 19,500,000 possible
+phrases. (See Doc/Dictionaries/math.txt)
+
+This is not to say that dictionary.c should not be cleaned up, it
+should for the sake of it being messy code, but with the point of
+making it faster is probably not that useful.
+
+
+There are a few PROs and CONs to compiling dictionaries, I will list
+them below:
+
+Just to be sure, by compiling I mean turning dictionaries into sorted
+binary records, not making them executable.
+
+PRO:
+ * Even though dictionaries are already fast, compiling them, even if
+   that just means sorting them, (and using that fact to process
+   faster), will easily speed up dictionaries by a factor of 10. A
+   more complicated compile could probably speed up dictionaries by a
+   factor of 10 on top of that.
+ * It would be totally cool and probably not that hard to do.
+CON:
+ * It makes dictionaries harder to modify.
+ * Time would probably be better spend doing something else. 
+ * We can just wait until dictionaries get that size anyway, after all
+   it is not that hard for a simple optimization.
+

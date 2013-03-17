@@ -1,0 +1,28 @@
+#!/usr/bin/python3
+
+from sys import argv
+from os import system
+from time import sleep
+
+args = argv
+
+if args.__len__() < 2:
+    print("Not enough arguments provided for screen")
+    exit(1)
+
+args.pop(0)
+
+
+def error(msg):
+    print(msg)
+    exit(1)
+
+
+if args[0] == 'on' or args[0] == 'ON' or args[0] == 'On':
+    if system('gnome-screensaver-command -d') == -1:
+        error("Error starting screensaver")
+elif args[0] == 'off' or args[0] == 'OFF' or args[0] == 'Off':
+    if system('gnome-screensaver-command -l') == -1:
+        error("Turning off screensaver failed")
+else:
+    error("Unrecognised command")

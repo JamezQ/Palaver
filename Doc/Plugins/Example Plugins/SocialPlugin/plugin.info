@@ -1,0 +1,7 @@
+name = SocialPlugin
+version = 1.0
+file = socialPoster
+description = Launch a simple window to update your online account's status
+author = Brett Mayson
+actions =
+status update,Launches the dialog
