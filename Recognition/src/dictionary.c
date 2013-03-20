@@ -248,6 +248,7 @@ int parse_args(int argc,char *argv[],char **speech,char **database) {
   if(*speech == NULL || *database == NULL) {
     printf("Memory error in allocating strings to hold speech \n"
 	   "and database.");
+    exit(1);
   }
   strcpy(*speech,argv[1]);
   strcpy(*database,argv[2]);
