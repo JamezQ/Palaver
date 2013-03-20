@@ -2,7 +2,7 @@
  * commands.h
  *
  *  Created on: Mar 20, 2013
- *      Author: slacker
+ *      Author: James Mcclain, Antonis Kalou
  */
 
 #ifndef COMMANDS_H_

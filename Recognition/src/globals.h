@@ -2,7 +2,7 @@
  * globals.h
  *
  *  Created on: Mar 20, 2013
- *      Author: slacker
+ *      Author: James Mcclain, Antonis Kalou
  */
 
 #ifndef GLOBALS_H_INCLUDED
@@ -15,11 +15,8 @@ extern struct variables{
   char *varValue;
 
   struct variables *next;
-};
+} *var_Header, *var_LL;
 
-
-extern struct variables *var_Header;
-extern struct variables *var_LL ;
 
 extern int LINE_IN_DATABASE;
 

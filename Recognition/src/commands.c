@@ -2,7 +2,7 @@
  * commands.c
  *
  *  Created on: Mar 20, 2013
- *      Author: slacker
+ *      Author: James Mcclain, Antonis Kalou
  */
 
 #include <stdio.h>

@@ -2,7 +2,7 @@
  * match.h
  *
  *  Created on: Mar 20, 2013
- *      Author: slacker
+ *      Author: James Mcclain, Antonis Kalou
  */
 
 #ifndef MATCH_H_INCLUDED

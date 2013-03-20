@@ -38,17 +38,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include "match.h"
-//#include "globals.h"
 #include "commands.h"
 
-STORE_VARIABLES = 0; // set to yes when actually
+
+int STORE_VARIABLES = 0; // set to yes when actually
                          // storing vars.
 
 struct variables *var_LL = NULL;
 struct variables *var_Header = NULL;
 
-
-LINE_IN_DATABASE = 0;
+int LINE_IN_DATABASE = 0;
 
 /***********************************************************************
   PROTOTYPES
