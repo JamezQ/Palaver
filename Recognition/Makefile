@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -Wall -Wno-unused
+CFLAGS=-c -Wall -Wno-unused -O3
 LDFLAGS=
 SOURCES=src/dictionary.c src/match.c src/commands.c
 OBJECTS=$(SOURCES:.cpp=.o)
