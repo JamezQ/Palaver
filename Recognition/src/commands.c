@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "commands.h"
 
 char *get_command(char *database,char *speech) {
