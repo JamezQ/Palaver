@@ -15,3 +15,7 @@
 *.exe
 *.out
 *.app
+
+#Python bytecode
+*.pyc
+*.pyo
