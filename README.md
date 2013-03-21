@@ -1,4 +1,4 @@
-ubuntu-speech-recognition
+Palaver-speech-recognition
 =========================
 
-Ubuntu Speech Recognition
+Open speech recognition for Linux
