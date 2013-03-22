@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # This should def be in config, please change it.
-TO=bman1559@gmail.com
-
+TO=addYourOwnEmail@localhost
 
 
 TMPFILE="$(tempfile)"
