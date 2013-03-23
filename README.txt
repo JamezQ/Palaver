@@ -7,7 +7,9 @@ python-argparse
 libsox-fmt-mp3
 mutt
 
-notify-osd #If you are on ubuntu you have it
+# You may already have the notification system.
+notification-daemon,notify-osd or xfce4,notifyd
+
 wget
 espeak
 
