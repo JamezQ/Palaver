@@ -73,7 +73,7 @@ open downloads
 <say,speak> (LINE words)
   say "$words$"
 <type,write> (LINE words)
-  type '$words$\\r'
+  type "$words$\\r"
 copy[ this]
   type '\\Cc'
 paste[ this]
