@@ -1,9 +1,0 @@
-name = InternetSearch
-version = 1.1
-description = Search Google or Wolfram Alpla
-author = James McClain
-file = goto
-actions =
-search <query>,Searches google for your query in a new tab
-wolfram <question>,Searches wolfram alpha for you question
-youtube <video>,Open YouTube search result with your query open
