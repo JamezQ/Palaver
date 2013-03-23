@@ -10,6 +10,9 @@ touch Recognition/dictionary.c
 cd Recognition
 make
 cd ..
+mkdir $HOME/.pavaler.d/
+cp Recognition/config/BlankInfo $HOME/.pavaler.d/UserInfo
+nano $HOME/.pavaler.d/UserInfo
 
 echo "Done, you will have to setup the hotkey yourself."
 

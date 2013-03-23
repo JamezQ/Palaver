@@ -6,3 +6,4 @@ InternetSearch|||1.1||| James McClain & Brett Mayson|||['goto']|||[]|||[['search
 SocialPlugin|||1.0||| Brett Mayson|||['socialPoster']|||[]|||[['status update', 'Launches the dialog']]
 ChatBot|||1.0||| Brett Mayson|||['cleverbot.pyc', 'chatbot']|||['chatbot.dic']|||[['start talking', 'initilize the chatbot'], ['stop talking', 'leave the chatbot']]
 MediaControl|||1.2||| Pablo May & Brett Mayson|||['mediaControl']|||[]|||[['volume up', 'increase the current volume'], ['volume down', 'decrease the current volume'], ['volume mute', 'mute or unmute the volume'], ['pause', 'pause media'], ['play [song]', ' play the specified song'], ['play', 'play media'], ['previous', 'previous media'], ['next', 'next media']]
+NoteToSelf|||1.0||| Brett Mayson & James McClain|||['note_to_self']|||[]|||[['note to self <note>', ' Send a note to your email']]

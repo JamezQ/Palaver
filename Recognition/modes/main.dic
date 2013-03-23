@@ -1,3 +1,7 @@
+#PLUGIN: NoteToSelf
+note to self (LINE rest)
+  note_to_self "$rest$"
+#END
 #PLUGIN: MediaControl
 play (LINE song)
   mediaControl "$song$"
@@ -85,9 +89,6 @@ paste[ this]
 dictation mode
   mode dictation
 
-note to self (LINE rest)
-  note_to_self "$rest$"
-
 <s,S>tatus
     result_from_call "git status"
 
@@ -102,3 +103,6 @@ open <g,G>oogle <c,C>hrome
   open 'google-chrome'
 open does not exit
   open 'bob'
+
+<<e,E>dit,<c,C>hange> <m,M>y <i,I>nfo
+  edit_details

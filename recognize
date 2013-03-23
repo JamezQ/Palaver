@@ -14,8 +14,14 @@
    #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # TODO, make this use the mode, context and custom sed script
 
+USER_DIR=$HOME/.pavaler.d
+
 # Try to run a command in ./Recognition/bin with useful errors.
 function run_command() {
+	while read line           
+	do           
+		export "$line"           
+	done <$USER_DIR/UserInfo
     eval "./Recognition/bin/$1"
 
     if [ $? != 0 ];then
@@ -41,9 +47,9 @@ fi
 rm Microphone/result 2>/dev/null
 
 
-if [ -e "$HOME/.USR.d/personal.dic" ];then
+if [ -e "$USER_DIR/personal.dic" ];then
     COMMAND=$(./Recognition/dictionary "$speech"\
- "$HOME/.USR.d/personal.dic")
+ "$USER_DIR/personal.dic")
 
     EXIT=$?
     if [ "$EXIT" == 0 ];then
@@ -53,7 +59,7 @@ if [ -e "$HOME/.USR.d/personal.dic" ];then
 	exit 0
     fi
     if [ "$EXIT" != 2 ];then
-	echo "There is an error in $HOME/.USR.d/personal.dic"
+	echo "There is an error in $USER_DIR/personal.dic"
     fi
 fi
 
