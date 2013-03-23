@@ -1,5 +1,5 @@
 name = MediaControl
-version = 1.1
+version = 1.2
 file = mediaControl
 description = Media Control Plugin
 author = Pablo May & Brett Mayson
@@ -9,6 +9,7 @@ volume up,increase the current volume
 volume down,decrease the current volume
 volume mute,mute or unmute the volume
 pause,pause media
+play [song], play the specified song
 play,play media
 previous,previous media
 next,next media

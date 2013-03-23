@@ -1,8 +1,6 @@
-#PLUGIN: ChatBot
-<s,S>tart <t,T>alking
-  mode chatbot
-#END
 #PLUGIN: MediaControl
+play (LINE song)
+  mediaControl $song$
 <v,V>olume <d,D>own
   mediaControl volume_down
 <v,V>olume <u,U>p
@@ -15,6 +13,12 @@ play
   mediaControl play
 previous
   mediaControl prev
+next
+  mediaControl next
+#END
+#PLUGIN: ChatBot
+<s,S>tart <t,T>alking
+  mode chatbot
 #END
 #PLUGIN: SocialPlugin
 <s,s>tatus <u,U>pdate

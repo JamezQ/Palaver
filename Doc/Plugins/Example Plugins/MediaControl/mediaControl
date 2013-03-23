@@ -15,4 +15,6 @@ case "$1" in
 		xte 'keydown XF86AudioNext' 'keyup XF86AudioNext';;
 	'prev' )
 		xte 'keydown XF86AudioPrev' 'keyup XF86AudioPrev';;
+	*)
+		find ~/Music/ -iname "*$1*" -exec  xdg-open {} \;
 esac

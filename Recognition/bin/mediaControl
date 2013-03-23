@@ -1,11 +1,11 @@
 #!/bin/bash
 
 case "$1" in
-	'down' )
+	'volume_down' )
 		xte 'keydown XF86AudioLowerVolume' 'usleep 600000' 'keyup XF86AudioLowerVolume';;
-	'up' )
+	'volume_up' )
 		xte 'keydown XF86AudioRaiseVolume' 'usleep 600000' 'keyup XF86AudioRaiseVolume';;
-	'mute' )
+	'volume_mute' )
 		xte 'keydown XF86AudioMute' 'keyup XF86AudioMute';;
 	'pause' )
 		xte 'keydown XF86AudioPause' 'keyup XF86AudioPause';;
@@ -15,4 +15,6 @@ case "$1" in
 		xte 'keydown XF86AudioNext' 'keyup XF86AudioNext';;
 	'prev' )
 		xte 'keydown XF86AudioPrev' 'keyup XF86AudioPrev';;
+	*)
+		find ~/Music/ -iname "*$1*" -exec  xdg-open {} \;
 esac
