@@ -1,6 +1,6 @@
 #PLUGIN: MediaControl
 play (LINE song)
-  mediaControl $song$
+  mediaControl "$song$"
 <v,V>olume <d,D>own
   mediaControl volume_down
 <v,V>olume <u,U>p
