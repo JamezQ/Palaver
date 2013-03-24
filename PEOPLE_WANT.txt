@@ -9,11 +9,11 @@ show me my recent documents
 natvigate to some place
 directions to some place
 
-whats my ip
+whats my ip - BmanDesigns
 
 where am I
 
-who am I
+who am I - BmanDesigns
 
 ifconfig
 

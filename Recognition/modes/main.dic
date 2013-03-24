@@ -1,3 +1,36 @@
+#PLUGIN: Gmail
+<d,D>o <i,I> have new <mail,messages,email>
+  Gmail unread
+<o,O>pen my <email,mail>
+  Gmail open
+#END
+#PLUGIN: ChatBot
+<s,S>tart <t,T>alking
+  mode chatbot
+#END
+#PLUGIN: TotemPlugin
+<p,P>lay <v,V>ideo
+  totem '--play'
+<pause,POS> <v,V>ideo
+  totem '--pause'
+<n,N>ext <v,V>ideo
+  totem '--next'
+<p,P>revious <v,V>ideo
+  totem '--previous'
+#END
+#PLUGIN: SportsScores
+(WORD league) <s,S>cores
+  scores "$league$"
+#END
+#PLUGIN: ScreenPlugin
+<s,S>creen <O,o>n
+    screen "on"
+<s,S>creen <O,o>ff
+    screen "off"
+<L,l>ock <s,S>creen
+    screen "off"
+<U,n>lock <s,S>creen
+    screen "on"#END
 #PLUGIN: NoteToSelf
 note to self (LINE rest)
   note_to_self "$rest$"
@@ -20,14 +53,6 @@ previous
 next
   mediaControl next
 #END
-#PLUGIN: ChatBot
-<s,S>tart <t,T>alking
-  mode chatbot
-#END
-#PLUGIN: SocialPlugin
-<s,s>tatus <u,U>pdate
-  socialPoster
-#END
 #PLUGIN: InternetSearch
 <<s,S>earch,<g,G>oogle> (LINE question)
   goto "http://www.google.com/search?hl=en&q=$question$"
@@ -38,23 +63,7 @@ next
 #END
 #PLUGIN: GoogleMaps
 where is (LINE place)
-  gmaps "https://maps.google.com/maps?q=$place$"
-#END
-#PLUGIN: ScreenPlugin
-<s,S>creen <O,o>n
-    screen "on"
-<s,S>creen <O,o>ff
-    screen "off"
-<L,l>ock <s,S>creen
-    screen "off"
-<U,n>lock <s,S>creen
-    screen "on"
-#END
-next
-  mediaControl next#END
-#PLUGIN: SportsScores
-(WORD league) <s,S>cores
-  scores "$league$"
+  gmaps "https://maps.google.com.mx/maps?q=$place$"
 #END
 #PLUGIN: FileBrowser
 open documents

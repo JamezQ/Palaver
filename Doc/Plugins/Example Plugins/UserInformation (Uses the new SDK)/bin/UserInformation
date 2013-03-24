@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+import argparse, os, subprocess
+argparser = argparse.ArgumentParser(description='Display User Information')
+argparser.add_argument('action', type=str,help='Action to execute')
+args = argparser.parse_args()
+root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+if args.action == "ip":
+	import socket
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s.connect(("gmail.com",80))
+	root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+	os.system(root+"result \""+s.getsockname()[0]+"\"")
+	print s.getsockname()[0]
+	s.close()
+if args.action == "name":
+	name = subprocess.Popen("echo $FIRST $LAST", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+	os.system(root+"result \""+name+"\"")
+	print name

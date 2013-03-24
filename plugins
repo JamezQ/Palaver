@@ -1,9 +1,386 @@
-FileBrowser|||1.1||| James McClain|||['file-browser']|||[]|||[['open home', "Opens the user's home folder"], ['open documents', "Opens the user's documents folder"], ['open music', "Opens the user's music folder"], ['open videos', "Opens the user's videos folder"], ['open pictures', "Opens the user's picture folder"], ['open downloads', "Opens the user's downloads folder"]]
-SportsScores|||1.0||| Brett Mayson|||['scores']|||[]|||[['<league> scores', 'Shows scores for the specified league (NBA, NHL, NFL)']]
-ScreenPlugin|||1.2||| Antonis Kalou|||['screen']|||[]|||[['screen on', ' turns on the screen'], ['screen off', ' turns off the screen']]
-GoogleMaps|||1.0||| Pablo May|||['gmaps']|||[]|||[['where is <place>', ' Look for a place at Google Maps']]
-InternetSearch|||1.1||| James McClain & Brett Mayson|||['goto']|||[]|||[['search <query>', 'Searches google for your query in a new tab'], ['wolfram <question>', 'Searches wolfram alpha for you question'], ['youtube <video>', 'Open YouTube search result with your query open']]
-SocialPlugin|||1.0||| Brett Mayson|||['socialPoster']|||[]|||[['status update', 'Launches the dialog']]
-ChatBot|||1.0||| Brett Mayson|||['cleverbot.pyc', 'chatbot']|||['chatbot.dic']|||[['start talking', 'initilize the chatbot'], ['stop talking', 'leave the chatbot']]
-MediaControl|||1.2||| Pablo May & Brett Mayson|||['mediaControl']|||[]|||[['volume up', 'increase the current volume'], ['volume down', 'decrease the current volume'], ['volume mute', 'mute or unmute the volume'], ['pause', 'pause media'], ['play [song]', ' play the specified song'], ['play', 'play media'], ['previous', 'previous media'], ['next', 'next media']]
-NoteToSelf|||1.0||| Brett Mayson & James McClain|||['note_to_self']|||[]|||[['note to self <note>', ' Send a note to your email']]
+#!/usr/bin/env python
+# This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import argparse, shutil, os, tarfile
+import sqlite3 as sql
+parser = argparse.ArgumentParser(description='Install and remove Plugins.')
+parser.add_argument('-i', metavar='file', type=str,help='Install a plugin - plugin .sp or .info file',default="")
+parser.add_argument('-r', metavar='plugin', type=str,help='Remove the specified plugin',default="")
+parser.add_argument('-info', metavar='plugin', type=str,help='Display info on a plugin',default="")
+parser.add_argument('-l', dest='listPlugins', action='store_true',default=False,help='List the installed plugins')
+args = parser.parse_args()
+listPlugins = args.listPlugins
+
+encCode = 5
+
+def sqlDefault(cur):
+	cur.execute("CREATE TABLE IF NOT EXISTS plugins(id INTEGER PRIMARY KEY, name TEXT, version TEXT, author TEXT, binFiles TEXT, dicts TEXT, actions TEXT, configs TEXT)")
+def encrypt(text,code):
+	try:
+		p = ''
+		code = int(code)
+		for each in text:
+			i = ord(each)
+			p = p + str((i+code)*(code*3))
+			p = p + '12506'
+			
+		return p[0:-5]
+	except:
+		return None
+def decrypt(text,code):
+	try:
+		l = text.split('12506')
+		p = ''
+		c=int(code)
+		for each in l:
+			i = int(each)
+			p = p + chr((i/(c*3)-(c)))
+		return p
+	except:
+		return None
+
+root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+if listPlugins == True:
+	con = sql.connect(root+"Recognition/config/plugins.db")
+	with con:
+		cur = con.cursor()
+		sqlDefault(cur)
+		cur.execute("SELECT * FROM plugins")
+		pluginList = cur.fetchall()
+		for line in pluginList:
+			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
+			actions=decrypt(actions,encCode)
+			print "\t"+name,"-",version
+			actions = eval(actions)
+			for each in actions:
+				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
+elif args.info != '':
+	con = sql.connect(root+"Recognition/config/plugins.db")
+	with con:
+		cur = con.cursor()
+		sqlDefault(cur)
+		cur.execute("SELECT * FROM plugins")
+		pluginList = cur.fetchall()
+		for line in pluginList:
+			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
+			actions=decrypt(actions,encCode)
+			print "\t"+name,"-",version
+		if name == args.info:
+			print name
+			print "\tAuthor:",author
+			print "\tVersion:",version
+			print "\tCommand(s):",str(cmdfile)
+			print "\tDictionaries:",str(dictionaries)
+			print "\tActions:"
+			actions = eval(actions)
+			for each in actions:
+				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
+			print "\tCommands:"
+			dictionary = open(root+'Recognition/modes/main.dic')
+			adding = False
+			for line in dictionary:
+				if adding == False:
+					add = False
+					if line.startswith('#PLUGIN: '):
+						if line.replace('#PLUGIN: ','').replace('\n','') == args.info:
+							add = False
+							adding = True
+				else:
+					add = True
+					if line == "#END\n":
+						adding = False
+						add = False
+				if add == True:
+					print "\t\t"+line.replace('\n','')
+			dictionary.close()
+elif args.i != '':
+	filename = args.i
+	plugins = {}
+	con = sql.connect(root+"Recognition/config/plugins.db")
+	with con:
+		cur = con.cursor()
+		sqlDefault(cur)
+		cur.execute("SELECT * FROM plugins")
+		pluginList = cur.fetchall()
+		for line in pluginList:
+			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
+			plugins[name] = [float(version),eval(cmdfile)]
+	if filename.endswith('.sp'):
+		tar = tarfile.open(mode='r:gz',fileobj=file(filename))
+		data = tar.extractfile('plugin.info')
+	else:
+		try:
+			data = open(filename)
+		except:
+			print 'Invalid File - not found'
+	recActions = False
+	multiDesc = False
+	actions = []
+	depend = []
+	dictionaries = []
+	description = ''
+	for line in data:
+		if line.startswith("name"):
+			name = line.replace('name =','').replace(' ','').replace('\n','')
+			multiDesc = False
+			recActions = False
+		elif line.startswith("version"):
+			version = float(line.replace('version =','').replace(' ','').replace('\n',''))
+			multiDesc = False
+			recActions = False
+		elif line.startswith("description"):
+			multiDesc = True
+			recActions = False
+		elif line.startswith('dictionaries'):
+			dictionaries = line.replace('dictionaries =','').replace(' ','').replace('\n','')
+			try:
+				dictionaries = dictionaries.split(',')
+			except:
+				dictionaries = [dictionaries]
+			recActions = False
+			multiDesc = False
+		elif line.startswith('configs'):
+			configs = line.replace('configs =','').replace(' ','').replace('\n','')
+			try:
+				configs = configs.split(',')
+			except:
+				configs = [configs]
+			recActions = False
+			multiDesc = False
+		elif line.startswith("file"):
+			cmdfile = line.replace('file =','').replace(' ','').replace('\n','')
+			try:
+				cmdfile = cmdfile.split(",")
+			except:
+				cmdfile = [cmdfile]
+			multiDesc = False
+			recActions = False
+		elif line.startswith("author"):
+			author = line.replace("author =",'').replace('\n','')
+			if author.startswith(' '):
+				author = author[1:]
+			multiDesc = False
+			recActions = False
+		elif line.startswith("dependencies"):
+			depend = line.replace("dependencies = ",'').replace('\n','')
+			multiDesc = False
+			recActions = False
+			try:
+				depend = depend.split(" ")
+			except:
+				depend = [depend]
+		elif line.startswith("actions"):
+			recActions = True
+			multiDesc = False
+		if multiDesc == True:
+			if line != '':
+				description = description + line.replace('description =','').replace('\n','')
+		if recActions == True:
+			if line.replace('actions =','').replace('\n','').replace(' ','') != '':
+				actions.append(line.replace('\n','').split(',',1))
+		if vars().has_key("configs") == False:
+			configs = list()
+	data.close()
+	install = True
+	try:
+		currentVersion = plugins[name][0]
+		if currentVersion > version:
+			print "A newer version is already installed"
+		elif currentVersion == version:
+			print "This version is already installed"
+		else:
+			print "Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again"
+			#Install Files
+	except:
+		for each in plugins:
+			for exe in plugins[each][1]:
+				if exe in cmdfile and exe != 'NONE' and len(plugins[each][1]) != 1 and install == True:
+					print "This plugin has a conflict with",each
+					print "Please rename the executable"
+					install = False
+		if install != False:
+			print name
+			print
+			print description
+			if type(configs) != list:
+				configs = eval(configs)
+			if len(depend) != 0:
+				print "WARNING: THIS PLUGIN REQUIRES:"
+				for each in depend:
+					print each,
+				print
+			print
+			if raw_input("Are you sure you want to continue? [Y/N]").lower() == 'y':
+				try:
+					dictionary = open(root+'Recognition/modes/main.dic')
+					text = dictionary.read()
+					dictionary.close()
+					if filename.endswith('.sp'):
+						command = tar.extractfile('actions.dic').read()
+					else:
+						data = open(''.join([e+'/' for e in args.i.split('/')[0:-1]]) + 'actions.dic')
+						command = data.read()
+						data.close()
+					try:
+						dictionary = open(root+'Recognition/modes/main.dic','w')
+						dictionary.write("#PLUGIN: "+name+"\n")
+						dictionary.write(command)
+						dictionary.write("#END\n")
+						dictionary.write(text)
+					except:
+						print "Error Installing Plugin In main.dic"
+					dictionary.close()
+				except:
+					print "Dictionary Not Found"
+				if filename.endswith('.sp'):
+					try:
+						for dic in dictionaries:
+							binfile = open(root+"Recognition/modes/"+dic,'w')
+							binfile.write(tar.extractfile(dic).read())
+							binfile.close()
+							print "File Installed to modes",dic
+					except:
+						print "Error Installing to modes",dic
+					try:
+						for c in configs:
+							try:
+								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+							except:
+								pass
+							confile = open(root+"Recognition/config/"+name+"/"+c,'w')
+							confile.write(tar.extractfile(c).read())
+							confile.close()
+							print "File Installed to config",c
+					except:
+						print "Error Installing to config",c
+				else:
+					src = ''.join([e+'/' for e in filename.split('/')[0:-1]])
+					try:
+						for dic in dictionaries:
+							shutil.copy(src+exe,root+"Recognition/modes/")
+						print "File Installed to Modes",dic
+					except:
+						print "Error Moving File to Modes",dic
+					try:
+						for c in config:
+							try:
+								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+							except:
+								pass
+							shutil.copy(src+c,root+"Recognition/config/"+args.i+"/")
+						print "File Installed to Config",c
+					except:
+						print "Error Moving File To Config",c
+				if cmdfile != "NONE":
+					if filename.endswith('.sp'):
+						try:
+							for exe in cmdfile:
+								binfile = open(root+"Recognition/bin/"+exe,'w')
+								binfile.write(tar.extractfile(exe).read())
+								binfile.close()
+								print "File Installed to Bin",exe
+						except:
+							print "Error Installing to Bin",exe
+					else:
+						src = ''.join([e+'/' for e in filename.split('/')[0:-1]])
+						try:
+							for exe in cmdfile:
+								shutil.copy(src+exe,root+"Recognition/bin/")
+							print "File Installed to Bin",exe
+						except:
+							print "Error Moving File"
+					for exe in cmdfile:
+						os.system("chmod +x "+root+"Recognition/bin/"+exe)
+				con = sql.connect(root+"Recognition/config/plugins.db")
+				with con:
+					cur = con.cursor()
+					sqlDefault(cur)
+					execline = "INSERT INTO plugins VALUES(NULL, \""+name+"\", \""+str(version)+"\", \""+author+"\", \""+str(cmdfile)+"\", \""+str(dictionaries)+"\", \""+encrypt(str(actions),encCode)+"\", \""+str(configs)+"\")"
+					cur.execute(execline)
+			else:
+				print "Quiting Installation"
+elif args.r != '':
+	pluginName = args.r
+	try:
+		pluginList = open(root+'plugins')
+	except:
+		print "Plugins Library Not Found"
+	good = False
+	try:
+		dictionary = open(root+'Recognition/modes/main.dic')
+		text = ""
+		deleting = False
+		for line in dictionary:
+			if deleting == False:
+				add = True
+				if line.startswith('#PLUGIN: '):
+					if line.replace('#PLUGIN: ','').replace('\n','') == pluginName:
+						add = False
+						deleting = True
+			else:
+				add = False
+				if line == "#END\n":
+					deleting = False
+			if add == True:
+				text = text + line
+		dictionary.close()
+		try:
+			dictionary = open(root+'Recognition/modes/main.dic','w')
+			dictionary.write(text)
+		except:
+			print "Error Installing Plugin In main.dic"
+		dictionary.close()
+	except:
+		print "Dictionary Not Found"
+	found = False
+	con = sql.connect(root+"Recognition/config/plugins.db")
+	with con:
+		cur = con.cursor()
+		sqlDefault(cur)
+		cur.execute("SELECT * FROM plugins")
+		pluginList = cur.fetchall()
+		for line in pluginList:
+			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
+			actions=decrypt(actions,encCode)
+			cmdfile = eval(cmdfile)
+			dictionaries = eval(dictionaries)
+			configs = eval(configs)
+			if name == pluginName:
+				good = True
+				if cmdfile[0] != "NONE":
+					for exe in cmdfile:
+						try:
+							os.remove(root+"Recognition/bin/"+exe)
+							print "Removed from Bin",exe
+						except:
+							print "Couldn't remove "+exe+" from bin"
+				for dic in dictionaries:
+						try:
+							os.remove(root+"Recognition/modes/"+dic)
+							print 'Removed from Modes',dic
+						except:
+							print "Couldn't remove "+dic+" from modes"
+				for c in configs:
+						try:
+							os.remove(root+"Recognition/config/"+args.r+"/"+c)
+							print 'Removed from Config',c
+						except:
+							print "Couldn't remove "+c+" from config"
+				cur.execute("DELETE FROM plugins WHERE id = "+str(pid))
+				print name,"Uninstalled"
+				found = True
+
+	if found == False:
+		print "Plugin Not Installed"
+else:
+	print "No Action Supplied"

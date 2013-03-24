@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# This should def be in config, please change it.
+
+
+TMPFILE="$(tempfile)"
+
+cp speech.flac $TMPFILE.flac
+
+
+sox $TMPFILE.flac $TMPFILE.mp3 && \
+    printf "You said on '`date`' \n %s\n" "$1" | \
+    mutt -s "Note to self" $EMAIL -a "${TMPFILE}.mp3" &
+
+./Recognition/bin/result "Mail sent to $EMAIL" "'$1'" ""
+
