@@ -29,7 +29,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "match.h"
-#include "globals.h"
 
 // PROTOTYPES *******************
 
