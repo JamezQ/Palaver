@@ -10,12 +10,14 @@
 #include <string.h>
 #include "commands.h"
 
-char *get_command(char *database,char *speech) {
-  void store_special_variables(char *speech,char *buf);
-  char *create_command(char *buf);
-  int is_match(char *speech,char *buf);
+// PROTOTYPES *****************
 
-  int file_exists(char *database);
+void store_special_variables(char *speech,char *buf);
+
+//****************************
+
+char *get_command(char *database,char *speech) {
+
   FILE *file;
   char buf[1024];
   char *ret = NULL; // The command to return.
@@ -44,7 +46,8 @@ char *get_command(char *database,char *speech) {
       store_special_variables(speech,buf);
       is_match(speech,buf); // Will now store variables in in a LL
 
-      fgets(buf,1024,file);++LINE_IN_DATABASE;
+      fgets(buf,1024,file);
+      ++LINE_IN_DATABASE;
       ret = create_command(buf);
       break;
     }
@@ -161,4 +164,27 @@ char *create_command(char *buf) {
   ret[i] = '\0';
 
   return ret;
+}
+
+void store_special_variables(char *speech,char *buf) {
+  if(var_LL == NULL) {
+    // first time add special var $SPEECH$
+    var_LL = malloc(1*sizeof(struct variables));
+    if(var_LL == NULL) {
+      printf("Memory Error in op_match!\n");
+      exit(1);
+    }
+    // Set the var_Header to access the head later.
+    var_Header = var_LL;
+    var_LL->next = NULL;
+    // The stupid error before "var_LL->next == NULL;"
+    var_LL->varName = malloc(strlen("SPEECH")+1);
+    strcpy(var_LL->varName,"SPEECH");
+    var_LL->varValue = malloc(strlen(speech)+1);
+    strcpy(var_LL->varValue,speech);
+  } else {
+    printf("var_LL is not null!!\n");
+    exit(1);
+  }
+
 }
