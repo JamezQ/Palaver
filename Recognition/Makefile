@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-c -Wall -Wno-unused -O3
-LDFLAGS=
+CFLAGS=-c -Wall -Wno-unused  
+LDFLAGS=-O3
 SOURCES=src/dictionary.c src/match.c src/commands.c
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=dictionary
