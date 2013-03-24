@@ -54,6 +54,10 @@ int LINE_IN_DATABASE = 0;
 ************************************************************************/
 
 
+int file_exists(char *database);
+int parse_args(int argc,char *argv[],char **speech,char **database);
+int is_there_enough_args(int argc);
+
 // Print with everything after the first space in single quotes
 // to stop the shell from getting to it.
 
@@ -63,7 +67,6 @@ int LINE_IN_DATABASE = 0;
 void print_arg_quoted(char *string);
 
 int main(int argc, char *argv[]) {
-  int parse_args(int argc,char *argv[],char **speech,char **database);
   
   char *speech = NULL; // What the user said.
   char *database = NULL; // File to check what command to run
@@ -128,97 +131,6 @@ void print_arg_quoted(char *string) {
   return;
 }
 
-void store_special_variables(char *speech,char *buf) {
-  if(var_LL == NULL) {
-    // first time add special var $SPEECH$
-    var_LL = malloc(1*sizeof(struct variables));
-    if(var_LL == NULL) {
-      printf("Memory Error in op_match!\n");
-      exit(1);
-    }
-    // Set the var_Header to access the head later.
-    var_Header = var_LL;
-    var_LL->next = NULL;
-    // The stupid error before "var_LL->next == NULL;"
-    var_LL->varName = malloc(strlen("SPEECH")+1);
-    strcpy(var_LL->varName,"SPEECH");
-    var_LL->varValue = malloc(strlen(speech)+1);
-    strcpy(var_LL->varValue,speech);
-  } else {
-    printf("var_LL is not null!!\n");
-    exit(1);
-  }
-
-}
-
-int check_equality(char *speech,char *buffer) {
-  // if there is a < in buffer, don't move the speech pointer,
-  // try to match from that point everything in <a,b,c>
-  // and then move the speech pointer to the end of the biggest match
-  // if nothing matches, return a 0.
-  //
-  // If there is a [ hit in the buffer, don't move the speech pointer,
-  // act exactly like <>,matching the largest possible.
-  // however, this time if nothing matches, simply do not move the
-  // speech pointer and go the the next thing in the buffer.
-  //
-  // If you hit a (,first check if it is a type<li,st> and just treat
-  // it as <> (but convert to number if it is type Number.
-  //
-  // Otherwise, just read as much as the type needs. But don't save the
-  // data here.
-  //
-  // \< \( and \[ are treated as their literal values.
-  
-  //  printf("Testing if %s == %s\n",speech,buffer); // DEBUG
-
-  
-  
-  while(*buffer != '\0') {
-    if(*buffer == '\n' || *buffer == '#' || *buffer == '\r') {
-      *buffer = '\0';
-    }
-    if (*buffer == '<') {
-      if(! lt_match(&buffer,&speech)) {
-      	return 0;
-      }
-      // If there is a match here, both speech and buffer
-      // will be in the right place.
-      continue;
-    }
-    else if (*buffer == '[') {
-      sb_match(&buffer,&speech);
-      // Same as lt_match, but not need to return no match
-      // if nothing is found, that is okay.
-      continue;
-    }
-    else if(*buffer == '(') {
-      if( ! op_match(&buffer,&speech)) {
-        return 0;
-      }
-      
-      continue;
-    }
-    else if(*buffer == '\\') {
-      ++buffer;
-      // Duplicates ??
-      if(*speech != *buffer)  
-        return 0;
-      }
-    else {
-      if(*speech != *buffer) {
-      	//	printf("%c != %c\n",*speech,*buffer); // DEBUG
-      	return 0;
-      }
-    }
-    if(*buffer != '\0') 
-      ++buffer;
-    if(*speech != '\0')
-      ++speech;
-  }
-  return 1;
-}
-
 int file_exists(char *database) {
   FILE *file;
   if((file = fopen(database,"r"))) {
@@ -229,7 +141,6 @@ int file_exists(char *database) {
 }
 
 int parse_args(int argc,char *argv[],char **speech,char **database) {
-  int is_there_enough_args(int argc);
 
   // Could reduce amount of code here. Also, maybe logic can be fixed
   if(! is_there_enough_args(argc)) {
