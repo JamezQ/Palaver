@@ -2,18 +2,42 @@
 
 # This script is hacky, maybe it should work using sockets.
 # Or dbus, or w/e
+# -*- coding: cp1252 -*-
+import pynotify, time, os, subprocess
 
-import pynotify
-import time
-import os
-
-os.chdir("Microphone")
+try:
+	os.chdir("Microphone")
+except:
+	print "Currently in",os.getcwd()
 PWD=str(os.getcwd()) # Our full path
+
+def transText(text):
+	text = text.replace("\n",'')
+	home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+	with open(home+"/.pavaler.d/UserInfo") as f:
+		for each in f:
+			line = each.replace('\n','')
+			if line.startswith("LANG="):
+				language = line.replace("LANG=","").replace(" ","")
+	if language == "en":
+		return text
+	else:
+		f1 = open("Translations/"+language)
+		f = f1.read().decode("utf-8")
+		f1.close()
+		f=f.split("\n")
+		for l in f:
+			l = l.replace('\n','')
+			if l != "":
+				o,n = l.split("=")
+				if o == text:
+					return n
+	return text
 
 
 pynotify.init("Speech Recognition")
 
-n = pynotify.Notification("Please wait",
+n = pynotify.Notification(transText("Please wait"),
                           "",
                           PWD+"/Not_Ready/stop.png")
 # If we start up the server in a script, it should first show
@@ -30,11 +54,11 @@ while True:
             i = 0
             continue
         if i < 32:
-            n.update("Recording",
+            n.update(transText("Recording"),
                      "",
                      PWD+"/Recording/thumbs/rec"+ str((i+1))+".gif")
         if i >= 32:
-            n.update("Recording",
+            n.update(transText("Recording"),
                      "",
                      PWD+"/Recording/thumbs/rec"+ str(64-i)+".gif")
         n.show()
@@ -42,7 +66,7 @@ while True:
         time.sleep(.1)
     i = 0
     while os.path.exists("pycmd_wait"):
-        n.update("Performing recognition",
+        n.update(transText("Performing recognition"),
                  "",
                  PWD+"/Waiting/wait-"+str(i)+".png")
         n.show()
@@ -52,7 +76,7 @@ while True:
             i = 0
     i = 0
     while os.path.exists("pycmd_done"):
-        n.update("Done",
+        n.update(transText("Done"),
                  " ",
                  " ")
         n.show()
@@ -63,9 +87,9 @@ while True:
     i = 0
     while os.path.exists("pycmd_result"):
         f = open("result");
-        
-        title = f.readline()
-
+       
+        title = transText(f.readline())
+     	print title
         image = f.readline()
         
         tmp = f.readline()
@@ -88,7 +112,7 @@ while True:
         else:
             if image[-1:] == '\n':
                 image = image[:-1]
-                
+          
         n.update(title,body,image)
         n.show()
         try:
@@ -97,7 +121,7 @@ while True:
             pass
     while os.path.exists("pycmd_stop"):
     
-        n.update("Please wait",
+        n.update(transText("Please wait"),
                  "",
                  PWD+"/Not_Ready/stop.png")
         n.show()
