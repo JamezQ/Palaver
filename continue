@@ -4,8 +4,7 @@
 
 import pyaudio
 import struct
-import math
-import os
+import math, time, os
 
 INITIAL_TAP_THRESHOLD = 0.010
 FORMAT = pyaudio.paInt16 
@@ -25,7 +24,8 @@ def get_rms( block ):
 	# RMS amplitude is defined as the square root of the 
 	# mean over time of the square of the amplitude.
 	# so we need to convert this string of bytes into 
-	# a string of 16-bit samples...
+	# a string of 16-bit samples...quit()
+
 
 	# we will get one short out for each 
 	# two chars in the string.
@@ -47,7 +47,6 @@ class TapTester(object):
 	def __init__(self):
 		self.pa = pyaudio.PyAudio()
 		self.stream = self.open_mic_stream()
-		self.tap_threshold = INITIAL_TAP_THRESHOLD
 		self.noisycount = MAX_TAP_BLOCKS+1 
 		self.quietcount = 0 
 		self.errorcount = 0
@@ -55,6 +54,9 @@ class TapTester(object):
 		self.switchmiddle = False
 		self.switchon = False
 		self.switchoff = True
+		self.starting = True
+		self.startBlocks = 0
+		self.ampAverage = 0.0
 
 	def stop(self):
 		self.stream.close()
@@ -63,13 +65,10 @@ class TapTester(object):
 		device_index = None            
 		for i in range( self.pa.get_device_count() ):     
 			devinfo = self.pa.get_device_info_by_index(i)   
-			print( "Device %d: %s"%(i,devinfo["name"]) )
 
 			for keyword in ["mic","input"]:
 				if keyword in devinfo["name"].lower():
-				    print( "Found an input: device %d - %s"%(i,devinfo["name"]) )
 				    device_index = i
-				    return device_index
 
 		if device_index == None:
 			print( "No preferred input found; using default input device." )
@@ -101,14 +100,31 @@ class TapTester(object):
 
 		amplitude = get_rms( block )
 		amp2 = amplitude*1000
+		if self.starting == True:
+			if self.startBlocks == 0:
+				print "Please talk into the mic"
+				time.sleep(0.2)
+				self.ampAverage = float(amp2)
+			else:
+				#print amp2
+				self.ampAverage = (self.ampAverage + float(amp2)) / 2.0
+			self.startBlocks += 1
+			if self.startBlocks == 51:
+				print "Original",self.ampAverage
+				self.ampAverage = self.ampAverage - (self.ampAverage * .9)
+				print "Baseline set at",self.ampAverage
+				self.starting = False
+				print "Ready"
 		#print self.noisycount, self.quietcount
-		if amp2 > 2.0:
+		#else:
+			#print self.noisycount,self.quietcount
+		if amp2 > self.ampAverage:
 			self.noisycount += 1
 			self.quietcount = 0
 		else:
 			self.noisycount = 0
 			self.quietcount += 1
-		if self.noisycount > 20:
+		if self.noisycount > 15:
 			if self.switchoff:
 				print "Switch On"
 				self.switchon = True
@@ -130,5 +146,7 @@ class TapTester(object):
 if __name__ == "__main__":
 	tt = TapTester()
 
-	for i in range(1000):
+	listen = True
+
+	while listen == True:
 		tt.listen()
