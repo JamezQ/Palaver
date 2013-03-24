@@ -1,3 +1,9 @@
+#PLUGIN: Gmail
+<d,D>o <i,I> have new <mail,messages,email>
+  Gmail unread
+<o,O>pen my <email,mail>
+  Gmail open
+#END
 #PLUGIN: ChatBot
 <s,S>tart <t,T>alking
   mode chatbot

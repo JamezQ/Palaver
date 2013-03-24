@@ -38,16 +38,16 @@ def encrypt(text,code):
 	except:
 		return None
 def decrypt(text,code):
-	#try:
-	l = text.split('12506')
-	p = ''
-	c=int(code)
-	for each in l:
-		i = int(each)
-		p = p + chr((i/(c*3)-(c)))
-	return p
-	#except:
-	#	return None
+	try:
+		l = text.split('12506')
+		p = ''
+		c=int(code)
+		for each in l:
+			i = int(each)
+			p = p + chr((i/(c*3)-(c)))
+		return p
+	except:
+		return None
 
 root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
 if listPlugins == True:
@@ -212,7 +212,8 @@ elif args.i != '':
 			print name
 			print
 			print description
-			configs = eval(configs)
+			if type(configs) != list:
+				configs = eval(configs)
 			if len(depend) != 0:
 				print "WARNING: THIS PLUGIN REQUIRES:"
 				for each in depend:
@@ -252,7 +253,11 @@ elif args.i != '':
 						print "Error Installing to modes",dic
 					try:
 						for c in configs:
-							confile = open(root+"Recognition/config/"+args.i+"/"+c,'w')
+							try:
+								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+							except:
+								pass
+							confile = open(root+"Recognition/config/"+name+"/"+c,'w')
 							confile.write(tar.extractfile(c).read())
 							confile.close()
 							print "File Installed to config",c
@@ -268,6 +273,10 @@ elif args.i != '':
 						print "Error Moving File to Modes",dic
 					try:
 						for c in config:
+							try:
+								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+							except:
+								pass
 							shutil.copy(src+c,root+"Recognition/config/"+args.i+"/")
 						print "File Installed to Config",c
 					except:
@@ -350,14 +359,23 @@ elif args.r != '':
 				good = True
 				if cmdfile[0] != "NONE":
 					for exe in cmdfile:
-						os.remove(root+"Recognition/bin/"+exe)
-						print "Removed from Bin",exe
+						try:
+							os.remove(root+"Recognition/bin/"+exe)
+							print "Removed from Bin",exe
+						except:
+							print "Couldn't remove "+exe+" from bin"
 				for dic in dictionaries:
-						os.remove(root+"Recognition/modes/"+dic)
-						print 'Removed from Modes',dic
+						try:
+							os.remove(root+"Recognition/modes/"+dic)
+							print 'Removed from Modes',dic
+						except:
+							print "Couldn't remove "+dic+" from modes"
 				for c in configs:
-						os.remove(root+"Recognition/config/"+args.r+"/"+c)
-						print 'Removed from Config',f
+						try:
+							os.remove(root+"Recognition/config/"+args.r+"/"+c)
+							print 'Removed from Config',c
+						except:
+							print "Couldn't remove "+c+" from config"
 				cur.execute("DELETE FROM plugins WHERE id = "+str(pid))
 				print name,"Uninstalled"
 				found = True
