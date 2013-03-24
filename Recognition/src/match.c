@@ -29,25 +29,29 @@
 #include <string.h>
 #include <stdlib.h>
 #include "match.h"
-//#include "globals.h"
+#include "globals.h"
+
+// PROTOTYPES *******************
+
+int check_equality(char *speech,char *buffer);
+int any_match(char **buffer,char **speech,char start,char end);
+char *line_match(char *buf,char **tmpSpeech);
+
+//********************************
+
 
 // square bracket match
 int sb_match(char **buffer,char **speech) {
-  int any_match(char **buffer,char **speech,char start,char end);
-
   return any_match(buffer,speech,'[',']');
 }
 
 // less than match
 int lt_match(char **buffer,char **speech) {
-  int any_match(char **buffer,char **speech,char start,char end);
-
   return any_match(buffer,speech,'<','>');
 }
 
 // Open paren (variable) match.
 int op_match(char **buffer,char **speech) {
-  char *line_match(char *buf,char **tmpSpeech);
 
   char *buf = *buffer;
   char *tmpSpeech = *speech;
@@ -425,7 +429,6 @@ char *line_match(char *buf,char **tmpSpeech) {
 }
 
 int is_match(char *speech,char *buf) {
-  int check_equality(char *speech,char *buffer);
   char *ptr;
   char *speechPtr;
 
@@ -443,4 +446,72 @@ int is_match(char *speech,char *buf) {
   speechPtr = speech;
 
   return check_equality(speechPtr,ptr);
+}
+
+int check_equality(char *speech,char *buffer) {
+  // if there is a < in buffer, don't move the speech pointer,
+  // try to match from that point everything in <a,b,c>
+  // and then move the speech pointer to the end of the biggest match
+  // if nothing matches, return a 0.
+  //
+  // If there is a [ hit in the buffer, don't move the speech pointer,
+  // act exactly like <>,matching the largest possible.
+  // however, this time if nothing matches, simply do not move the
+  // speech pointer and go the the next thing in the buffer.
+  //
+  // If you hit a (,first check if it is a type<li,st> and just treat
+  // it as <> (but convert to number if it is type Number.
+  //
+  // Otherwise, just read as much as the type needs. But don't save the
+  // data here.
+  //
+  // \< \( and \[ are treated as their literal values.
+
+  //  printf("Testing if %s == %s\n",speech,buffer); // DEBUG
+
+
+
+  while(*buffer != '\0') {
+    if(*buffer == '\n' || *buffer == '#' || *buffer == '\r') {
+      *buffer = '\0';
+    }
+    if (*buffer == '<') {
+      if(! lt_match(&buffer,&speech)) {
+      	return 0;
+      }
+      // If there is a match here, both speech and buffer
+      // will be in the right place.
+      continue;
+    }
+    else if (*buffer == '[') {
+      sb_match(&buffer,&speech);
+      // Same as lt_match, but not need to return no match
+      // if nothing is found, that is okay.
+      continue;
+    }
+    else if(*buffer == '(') {
+      if( ! op_match(&buffer,&speech)) {
+        return 0;
+      }
+
+      continue;
+    }
+    else if(*buffer == '\\') {
+      ++buffer;
+      // Duplicates ??
+      if(*speech != *buffer)
+        return 0;
+      }
+    else {
+      if(*speech != *buffer) {
+      	//	printf("%c != %c\n",*speech,*buffer); // DEBUG
+      	return 0;
+      }
+    }
+    if(*buffer != '\0')
+      ++buffer;
+    if(*speech != '\0')
+      ++speech;
+  }
+  return 1;
 }
