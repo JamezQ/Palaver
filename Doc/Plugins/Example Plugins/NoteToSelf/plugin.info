@@ -1,0 +1,7 @@
+name = NoteToSelf
+version = 1.0
+file = note_to_self
+description = Send yourself a note via email
+author = Brett Mayson & James McClain
+actions =
+note to self <note>, Send a note to your email
