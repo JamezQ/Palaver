@@ -1,3 +1,5 @@
+If you wish to help with translations, email bmandesigns@gmail.com
+
 BEFORE USE, PLEASE INSTALL:
 sox
 python-argparse
