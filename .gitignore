@@ -19,3 +19,7 @@
 #Python bytecode
 *.pyc
 *.pyo
+
+
+#Text editor's backup file
+*~
