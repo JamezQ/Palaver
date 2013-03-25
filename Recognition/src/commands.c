@@ -76,11 +76,11 @@ char *create_command(char *buf) {
   struct variables *tmpHeader;
 
   // First skip leading spaces
-  if(*buf != ' ') {
+  if(*buf != ' ' && *buf != '\t') {
     printf("This line does not start with a space!\n");
     exit(1);
   }
-  while(*buf == ' ') {
+  while(*buf == ' ' || *buf == '\t') {
     ++buf;
   }
   while(*buf != '\0' && *buf != '\n' && *buf != '\r' && *buf != '#') {
