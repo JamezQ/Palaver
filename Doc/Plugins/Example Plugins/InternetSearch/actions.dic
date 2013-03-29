@@ -1,6 +1,0 @@
-<<s,S>earch,<g,G>oogle> (LINE question)
-  goto "http://www.google.com/search?q=$question$"
-<<w,W>olfram,wolf RAM>[ <a,A>lpha] (LINE question)
-  goto "www.wolframalpha.com/input/?i=$question$"
-<y,Y>ou<t,T>ube (LINE video)
-  goto "https://www.youtube.com/results?search_query=$video$"

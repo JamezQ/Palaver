@@ -1,9 +1,0 @@
-#!/bin/bash
-
-> Microphone/result
-
-for i in "$@";do
-    echo $i >> Microphone/result
-done
-
-./pycmd result

@@ -1,6 +1,0 @@
-#!/usr/bin/env python
-
-import cleverbot, os, argparse
-argparser = argparse.ArgumentParser(description='Talk to a chatbot')
-argparser.add_argument('words', type=str,help='What to say')
-os.system(''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])+"result "+cleverbot.Session().Ask(argparser.parse_args().words))

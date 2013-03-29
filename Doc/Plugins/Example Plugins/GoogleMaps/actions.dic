@@ -1,2 +1,0 @@
-where is (LINE place)
-  gmaps "https://maps.google.com/maps?q=$place$"

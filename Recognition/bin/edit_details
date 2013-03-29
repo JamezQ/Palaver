@@ -1,3 +1,0 @@
-#!/bin/bash
-
-gedit "$HOME/.pavaler.d/UserInfo"
