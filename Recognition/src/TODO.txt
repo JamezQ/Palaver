@@ -1,0 +1,20 @@
+Plan
+----------
+
+1. Not case sensative.
+2. Tabs are fine, so are spaces --- DONE!!
+3. Separate checking from file io, so that this can be used in the web
+4. implement {} to mean "match agaist dictionary"
+4a. unlike [] and <>, for optimization reasons, {} will be the first
+match, not the longest match.
+5. Make a DICT type, so (DICT program programs.dic) or something
+5a. this will be the same as (WORD<{programs.dic}> program)
+6. Make stuff in "" and '' auto escape ' and ""'
+7. Allow the dictionary program to list all matches without restarting
+8. (HARD LEVEL) allow the dictionary program to output matches and
+rank them based on how good a match was it
+9. Add a $USER$ variable and other env variables eg. $EMAIL$, $HOME$
+10. Allow any variable to be set via the cmd line
+    eg../dictionary "speech" dicfile.dic --vars="VAR=LA;VAR2=BBB"
+11. maybe syntax errors better by giving a line number and a column 
+
