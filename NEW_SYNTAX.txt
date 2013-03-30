@@ -1,0 +1,24 @@
+Here the syntax of dictionary files will be finalized. For the most
+part, not much has to change, the syntax of dictionary files already
+makes them able to match many different sentences with little
+code. But there are ways it can be improved.
+
+First, It should be known the purpose of this syntax.
+
+The purpose of this syntax is to be as efficient as possible at
+extracting meaning from natural language. We are looking for the
+semantics of a sentence, not it's syntax.
+
+For the reason above, the first improvement is that all matches done
+by the dictionary are case insensitive. I can not think of any time
+that capitalization should change the meaning of a command, and even
+if it did, speech recognition would not be able to understand it.
+
+So, <n,N>o <M,m>ore <o,O>f <t,T>his. It is by far the ugliest and most
+un needed part of dictionaries.
+
+------------------------------------------
+For now I will just write what comes to mind as improvements for the
+dictionary syntax. I will worry about structuring this later.
+
+

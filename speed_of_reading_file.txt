@@ -1,0 +1,39 @@
+So I made simple programs to test the raw speed of reading a file.
+
+I was thinking that fread would be signifigantly faster then fgets.
+
+At first I was wrong. Here are the benchmarks.
+
+For a 200 MB file.
+
+fgets:  .8214 seconds
+fread:  .7992 seconds
+read : 1.0693 seconds
+
+But then, something strange came up when trying different optimization levels.
+
+Code at -O2
+
+fgets:  .8144
+fread:  .4698
+read :  .4982
+
+Code at -O3
+
+fgets:  .8055
+fread:  .4026
+read :  .4367
+
+
+So, aparently, there *is* a signifigant speedup. When optimization is used,
+fread is about twice as fast as fgets. That can't be ignored. It means that
+if we use fread over fgets, we can have a dictionary twice as big before we
+have noticable lag. 
+
+What interests me is that without optimizations, the speedup is only a miniscule 
+2.8%. I am very curious about what is happening that allows to go from a speedup
+of about 2.8% to a speedup of slightly over 100%.
+
+One thing is clear, fread is a better choice then read. 
+So I am glad that is decided.
+
