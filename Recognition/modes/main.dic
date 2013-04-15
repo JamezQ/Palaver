@@ -1,3 +1,43 @@
+#PLUGIN: SettingsLaunch
+<a,A>ppearance <s,S>ettings
+  SettingsLaunch background
+<b,B>rightness <a,A>nd <l,L>ock
+  SettingsLaunch screen
+<k,K>eyboard <l,L>ayout
+  SettingsLaunch region
+<o,O>nline <a,A>ccounts
+  SettingsLaunch credentials
+<p,P>rivacy <s,S>ettings
+  SettingsLaunch activity-log-manager
+<b,B>luetooth <s,S>ettings
+  SettingsLaunch bluetooth
+<c,C>olor <s,S>ettings
+  SettingsLaunch color
+<d,D>isplay <s,S>ettings
+  SettingsLaunch display
+<k,K>eyboard <s,S>ettings
+  SettingsLaunch keyboard
+<m,M>ouse and <t,T>rackpad
+  SettomgsLaunch mouse
+<n,N>etwork <s,S>ettings
+  SettingsLaunch network
+<p,P>ower <s,S>ettings
+  SettingsLaunch power
+<s,S>ound <s,S>ettings
+  SettingsLaunch sound-nua
+<w,W>acom <t,T>ablet <s,S>ettings
+  SettingsLaunch wacom
+<b,B>ackup <s,S>ettings
+  SettingsLaunch deja-dup
+<c,C>omputer <d,D>etails
+  SettingsLaunch info
+<t,T>ime and <d,D>ate <s,S>ettings
+  SettingsLaunch indicator-datetime
+<u,U>niversal <a,A>ccess <s,S>ettings
+  SettingsLaunch universal-access
+<u,U>ser <a,A>ccounts
+  SettingsLaunch user-accounts
+#END
 #PLUGIN: UserInformation
 <<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
   UserInformation ip
