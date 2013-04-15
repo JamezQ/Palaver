@@ -56,7 +56,7 @@ class TapTester(object):
 		self.switchoff = True
 		self.starting = True
 		self.startBlocks = 0
-		self.ampAverage = 0.0
+		self.ampAverage =0
 
 	def stop(self):
 		self.stream.close()
@@ -68,7 +68,8 @@ class TapTester(object):
 
 			for keyword in ["mic","input"]:
 				if keyword in devinfo["name"].lower():
-				    device_index = i
+					device_index = i
+					print "Alternate Device Found",devinfo["name"]
 
 		if device_index == None:
 			print( "No preferred input found; using default input device." )
@@ -103,7 +104,7 @@ class TapTester(object):
 		if self.starting == True:
 			if self.startBlocks == 0:
 				print "Please talk into the mic"
-				time.sleep(0.2)
+				time.sleep(1)
 				self.ampAverage = float(amp2)
 			else:
 				#print amp2
@@ -111,7 +112,7 @@ class TapTester(object):
 			self.startBlocks += 1
 			if self.startBlocks == 51:
 				print "Original",self.ampAverage
-				self.ampAverage = self.ampAverage - (self.ampAverage * .9)
+				self.ampAverage = self.ampAverage - (self.ampAverage * .5)
 				print "Baseline set at",self.ampAverage
 				self.starting = False
 				print "Ready"
@@ -135,7 +136,7 @@ class TapTester(object):
 				os.system("./hotkey")
 				self.quietcount = 0
 				self.switchmiddle = True
-			if self.quietcount > 30:
+			if self.quietcount > 20:
 				if self.switchon and self.switchmiddle:
 					print "Switch Off"
 					os.system("./hotkey")
