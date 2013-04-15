@@ -7,7 +7,7 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
-sudo apt-get install sox python-argparse wget espeak xautomation xvkbd
+sudo apt-get install sox python-argparse wget espeak xautomation xvkbd -y
 
 DIR="$(pwd)"
 
