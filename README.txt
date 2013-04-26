@@ -36,6 +36,13 @@ TO USE:
    This is something that will be worked on in the private beta, to
    make it so it's not required.
 
+
+Upon first use, some users have reported an error message: 
+"There was an error while reading main.dic"
+If this happens, try running 'make -B' from within "/Palaver/Recognition" folder,
+then use your hotkey and dictate one of the default commands. i.e. "Open Documents"
+
+
 Some commands require extra setup, I think this is only the
 note to self command. You will need to setup a .muttrc and change
 the note_to_self script.
