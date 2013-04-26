@@ -6,7 +6,7 @@ basics of the dictionary language. If you have any suggestions please
 tell me [JamezQ].
 
 You should edit these commands in your personal dictionary. It is
-located in ~/.USR.d/personal.dic
+located in ~/.palver.d/personal.dic
 If you don't have a personal dictionary please create it, this will
 allow you immediate testing of your commands.
 
