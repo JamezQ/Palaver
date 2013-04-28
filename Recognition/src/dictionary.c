@@ -53,10 +53,8 @@ int LINE_IN_DATABASE = 0;
   PROTOTYPES
 ************************************************************************/
 
-
-int file_exists(char *database);
-int parse_args(int argc,char *argv[],char **speech,char **database);
-int is_there_enough_args(int argc);
+static int parse_args(int argc,char *argv[],char **speech,char **database);
+static int is_there_enough_args(int argc);
 
 // Print with everything after the first space in single quotes
 // to stop the shell from getting to it.
@@ -103,7 +101,7 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-void print_arg_quoted(char *string) {
+static void print_arg_quoted(char *string) {
   while(*string != ' ' && *string != '\0') {
     printf("%c",*string);
     ++string;
@@ -131,16 +129,7 @@ void print_arg_quoted(char *string) {
   return;
 }
 
-int file_exists(char *database) {
-  FILE *file;
-  if((file = fopen(database,"r"))) {
-    fclose(file);
-    return 1;
-  }
-  return 0;
-}
-
-int parse_args(int argc,char *argv[],char **speech,char **database) {
+static int parse_args(int argc,char *argv[],char **speech,char **database) {
 
   // Could reduce amount of code here. Also, maybe logic can be fixed
   if(! is_there_enough_args(argc)) {
@@ -177,6 +166,6 @@ int parse_args(int argc,char *argv[],char **speech,char **database) {
   return 0;
 }
 
-int is_there_enough_args(int argc) {
+static inline int is_there_enough_args(int argc) {
   return ((argc == 3) || (argc == 4));
 }

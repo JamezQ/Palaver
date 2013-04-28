@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <error.h>
+#include <assert.h>
 #include "commands.h"
 
 // PROTOTYPES *****************
@@ -23,18 +24,17 @@ char *get_command(char *database,char *speech) {
   char buf[1024];
   char *ret = NULL; // The command to return.
 
-  if(! file_exists(database)) {
-  fprintf(stderr,"The database \"%s\" doesn't exist!\n",database);
-  exit(EXIT_FAILURE);
-  }
-
   file = fopen(database,"r");
+  if(file == NULL) {
+    perror("fopen");
+    exit(EXIT_FAILURE);
+  }
 
   int i;
   if(LINE_IN_DATABASE != 0) {
     for(i = 0;i < LINE_IN_DATABASE;++i) {
       if(!(fgets(buf,1024,file))) {
-      	return ret;
+      	goto success;
       }
     }
   }
@@ -53,6 +53,8 @@ char *get_command(char *database,char *speech) {
       break;
     }
   }
+  
+ success:
   fclose(file);
   return ret;
 }
@@ -168,24 +170,20 @@ char *create_command(char *buf) {
 }
 
 void store_special_variables(char *speech,char *buf) {
+  assert(var_LL == NULL);
+  
+  // first time add special var $SPEECH$
+  var_LL = malloc(1*sizeof(struct variables));
   if(var_LL == NULL) {
-    // first time add special var $SPEECH$
-    var_LL = malloc(1*sizeof(struct variables));
-    if(var_LL == NULL) {
-      perror("malloc:");
-      exit(EXIT_FAILURE);
-    }
-    // Set the var_Header to access the head later.
-    var_Header = var_LL;
-    var_LL->next = NULL;
-    // The stupid error before "var_LL->next == NULL;"
-    var_LL->varName = malloc(strlen("SPEECH")+1);
-    strcpy(var_LL->varName,"SPEECH");
-    var_LL->varValue = malloc(strlen(speech)+1);
-    strcpy(var_LL->varValue,speech);
-  } else {
-    fprintf(stderr,"var_LL is not null!!\n");
-    exit(1);
+    perror("malloc:");
+    exit(EXIT_FAILURE);
   }
-
+  // Set the var_Header to access the head later.
+  var_Header = var_LL;
+  var_LL->next = NULL;
+  // The stupid error before "var_LL->next == NULL;"
+  var_LL->varName = malloc(strlen("SPEECH")+1);
+  strcpy(var_LL->varName,"SPEECH");
+  var_LL->varValue = malloc(strlen(speech)+1);
+  strcpy(var_LL->varValue,speech);
 }
