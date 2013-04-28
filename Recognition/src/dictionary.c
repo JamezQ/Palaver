@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
   char *command = NULL; // The command to run.
   
   if(parse_args(argc,argv,&speech,&database) != 0) {
-    exit(1);
+    exit(EXIT_FAILURE);
   }
   command = get_command(database,speech);
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
     }
     
   } else {
-    printf("No Command recognized.\n");
+    fprintf(stderr,"No Command recognized.\n");
     exit(2);
   }
 
@@ -149,17 +149,16 @@ int parse_args(int argc,char *argv[],char **speech,char **database) {
     return 1;
   }
   if(*speech != NULL || *database != NULL) {
-    printf("ERROR, speech and database pointers must be NULL\n"
-	   "before calling parse_args().");
+    fprintf(stderr,"ERROR, speech and database pointers must be NULL\n"
+	    "before calling parse_args().");
     return 1;
   }
   *speech = malloc(sizeof(char)*strlen(argv[1])+1);
   *database = malloc(sizeof(char)*strlen(argv[2])+1);
 
   if(*speech == NULL || *database == NULL) {
-    printf("Memory error in allocating strings to hold speech \n"
-	   "and database.");
-    exit(1);
+   perror("malloc:");
+   exit(EXIT_FAILURE);
   }
   strcpy(*speech,argv[1]);
   strcpy(*database,argv[2]);
@@ -169,8 +168,8 @@ int parse_args(int argc,char *argv[],char **speech,char **database) {
     
     sscanf(argv[3],"%d",&i);
     if(i <= 0) {
-      printf("'%s' is not a valid line to start on.\n",argv[3]);
-      exit(1);
+      fprintf(stderr,"'%s' is not a valid line to start on.\n",argv[3]);
+      exit(EXIT_FAILURE);
     }
     LINE_IN_DATABASE = i-1;
 

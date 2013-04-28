@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <error.h>
 #include "commands.h"
 
 // PROTOTYPES *****************
@@ -23,8 +24,8 @@ char *get_command(char *database,char *speech) {
   char *ret = NULL; // The command to return.
 
   if(! file_exists(database)) {
-    printf("The database \"%s\" doesn't exist!\n",database);
-    exit(2);
+  fprintf(stderr,"The database \"%s\" doesn't exist!\n",database);
+  exit(EXIT_FAILURE);
   }
 
   file = fopen(database,"r");
@@ -66,8 +67,8 @@ char *create_command(char *buf) {
   /* printf("%s\n",buf); */
   char *ret = malloc(sizeof(char)*1024); // get a kilo at a time
   if(ret == NULL) {
-    printf("Memory problems in create command!\n");
-    exit(1);
+  perror("malloc:");
+  exit(EXIT_FAILURE);
   }
   int i = 0;
   char saveChar;
@@ -77,8 +78,8 @@ char *create_command(char *buf) {
 
   // First skip leading spaces
   if(*buf != ' ' && *buf != '\t') {
-    printf("This line does not start with a space!\n");
-    exit(1);
+    fprintf(stderr,"This line does not start with a space!\n");
+    exit(EXIT_FAILURE);
   }
   while(*buf == ' ' || *buf == '\t') {
     ++buf;
@@ -88,15 +89,15 @@ char *create_command(char *buf) {
     if( i % 1023) {
       ret = realloc(ret,sizeof(char)*1024*((i/1023)+1));
       if(ret == NULL) {
-      	printf("Memory problems in create command!\n");
-      	exit(1);
+      	perror("malloc:");
+      	exit(EXIT_FAILURE);
       }
     }
     if(*buf == '\\') {
       buf++;
       if(*buf == '\n' || *buf == '\0' || *buf == '\r') {
-      	printf("Error, '\\' char at the end\n");
-      	exit(1);
+        fprintf(stderr,"Error, '\\' char at the end\n");
+      	exit(EXIT_FAILURE);
       }
       ret[i] = *buf;
     }
@@ -106,7 +107,7 @@ char *create_command(char *buf) {
       ++buf;
       if(*buf == '$' || *buf == '\n' || *buf == '\0' || *buf == '\r') {
       	printf("Bad syntax in create command!\n");
-      	exit(1);
+      	exit(EXIT_FAILURE);
       }
       startVarName = buf;
       while(*buf != '$' && *buf != '\n' && *buf != '\0' && *buf != '\r') {
@@ -114,8 +115,8 @@ char *create_command(char *buf) {
       }
 
       if(*buf != '$') {
-      	printf("Bad syntax in create command!\n");
-      	exit(1);
+        fprintf(stderr,"Bad syntax in create command!\n");
+      	exit(EXIT_FAILURE);
       }
 
       saveChar = *buf;
@@ -137,8 +138,8 @@ char *create_command(char *buf) {
       	    if( i % 1023) {
       	      ret = realloc(ret,sizeof(char)*1024*((i/1023)+1));
       	      if(ret == NULL) {
-            		printf("Memory problems in create command!\n");
-            		exit(1);
+            		perror("malloc:");
+            		exit(EXIT_FAILURE);
       	      }
       	    }
 
@@ -171,8 +172,8 @@ void store_special_variables(char *speech,char *buf) {
     // first time add special var $SPEECH$
     var_LL = malloc(1*sizeof(struct variables));
     if(var_LL == NULL) {
-      printf("Memory Error in op_match!\n");
-      exit(1);
+      perror("malloc:");
+      exit(EXIT_FAILURE);
     }
     // Set the var_Header to access the head later.
     var_Header = var_LL;
@@ -183,7 +184,7 @@ void store_special_variables(char *speech,char *buf) {
     var_LL->varValue = malloc(strlen(speech)+1);
     strcpy(var_LL->varValue,speech);
   } else {
-    printf("var_LL is not null!!\n");
+    fprintf(stderr,"var_LL is not null!!\n");
     exit(1);
   }
 
