@@ -62,7 +62,7 @@ static int is_there_enough_args(int argc);
 // ie. testing 1 2 3
 // becomes
 // testing '1 2 3'
-void print_arg_quoted(char *string);
+static void print_arg_quoted(char *string);
 
 int main(int argc, char *argv[]) {
   
