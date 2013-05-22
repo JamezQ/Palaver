@@ -14,7 +14,7 @@
    #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # TODO, make this use the mode, context and custom sed script
 
-USER_DIR=$HOME/.pavaler.d
+USER_DIR=$HOME/.palaver.d
 
 # Try to run a command in ./Recognition/bin with useful errors.
 function run_command() {

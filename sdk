@@ -30,7 +30,7 @@ if args.c != '':
 	os.system("chmod +x "+pdir+"bin/"+args.c)
 	os.system("touch "+pdir+"config/settings.conf")
 	#Create plugin.info
-	with open(home+"/.pavaler.d/UserInfo") as f:
+	with open(home+"/.palaver.d/UserInfo") as f:
 		for l in f:
 			if l.startswith("FIRST="):
 				first = l.replace("FIRST=",'').replace("\n",'')

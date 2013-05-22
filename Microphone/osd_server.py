@@ -14,7 +14,7 @@ PWD=str(os.getcwd()) # Our full path
 def transText(text):
 	text = text.replace("\n",'')
 	home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
-	with open(home+"/.pavaler.d/UserInfo") as f:
+	with open(home+"/.palaver.d/UserInfo") as f:
 		for each in f:
 			line = each.replace('\n','')
 			if line.startswith("LANG="):
