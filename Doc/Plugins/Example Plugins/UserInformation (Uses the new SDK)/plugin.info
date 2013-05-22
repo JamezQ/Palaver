@@ -6,4 +6,4 @@ author = Brett Mayson
 description = Get User Information
 actions =
 whats my ip, Display the users ip address
-whats my name, Display the users name (as set in .pavaler.d/UserInfo)
+whats my name, Display the users name (as set in .palaver.d/UserInfo)
