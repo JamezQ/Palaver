@@ -1,4 +1,6 @@
-If you wish to help with translations, email bmandesigns@gmail.com
+If you wish to help with translations, email brett@bmandesigns.com
+
+A repo is currently in beta. To join send an email to brett@bmandesigns.com with your first and last name, email address and a username
 
 BEFORE USE, PLEASE INSTALL:
 sox
