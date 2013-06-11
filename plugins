@@ -11,17 +11,40 @@
 
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import argparse, shutil, os, tarfile
+import argparse, shutil, os, tarfile, time, urllib2, subprocess
 import sqlite3 as sql
 parser = argparse.ArgumentParser(description='Install and remove Plugins.')
 parser.add_argument('-i', metavar='file', type=str,help='Install a plugin - plugin .sp or .info file',default="")
 parser.add_argument('-r', metavar='plugin', type=str,help='Remove the specified plugin',default="")
+parser.add_argument('-p', metavar='name', type=str,help='Install a plugin from the repo',default="")
 parser.add_argument('-info', metavar='plugin', type=str,help='Display info on a plugin',default="")
 parser.add_argument('-l', dest='listPlugins', action='store_true',default=False,help='List the installed plugins')
+parser.add_argument('-f', dest='force', action='store_true',default=False,help='Force installation with no confirmation.')
 args = parser.parse_args()
 listPlugins = args.listPlugins
+force = args.force
+
+installGo = True
+
+if args.p != '':
+	installGo = False
+	args.i = 'tmp.sp'
+	f = urllib2.urlopen("http://palaver.bmandesigns.com/functions.php?f=download&t=name&s="+args.p)
+	with open('tmp.sp', "wb") as local_file:
+		local_file.write(f.read())
+	print "Bam"
+	installGo = True
+	
 
 encCode = 5
+
+home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+
+pluginDataBaseLocation = home + "/.palaver.d/plugins.db"
+
+print pluginDataBaseLocation
+
+configRootFolder = home+"/.palaver.d/config/"
 
 def sqlDefault(cur):
 	cur.execute("CREATE TABLE IF NOT EXISTS plugins(id INTEGER PRIMARY KEY, name TEXT, version TEXT, author TEXT, binFiles TEXT, dicts TEXT, actions TEXT, configs TEXT)")
@@ -51,7 +74,7 @@ def decrypt(text,code):
 
 root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
 if listPlugins == True:
-	con = sql.connect(root+"Recognition/config/plugins.db")
+	con = sql.connect(pluginDataBaseLocation)
 	with con:
 		cur = con.cursor()
 		sqlDefault(cur)
@@ -65,7 +88,7 @@ if listPlugins == True:
 			for each in actions:
 				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
 elif args.info != '':
-	con = sql.connect(root+"Recognition/config/plugins.db")
+	con = sql.connect(pluginDataBaseLocation)
 	with con:
 		cur = con.cursor()
 		sqlDefault(cur)
@@ -86,7 +109,7 @@ elif args.info != '':
 			for each in actions:
 				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
 			print "\tCommands:"
-			dictionary = open(root+'Recognition/modes/main.dic')
+			dictionary = open(pluginDataBaseLocation)
 			adding = False
 			for line in dictionary:
 				if adding == False:
@@ -104,9 +127,12 @@ elif args.info != '':
 					print "\t\t"+line.replace('\n','')
 			dictionary.close()
 elif args.i != '':
+	print args.i
+	while installGo == False:
+		time.sleep(0.1)
 	filename = args.i
 	plugins = {}
-	con = sql.connect(root+"Recognition/config/plugins.db")
+	con = sql.connect(pluginDataBaseLocation)
 	with con:
 		cur = con.cursor()
 		sqlDefault(cur)
@@ -196,10 +222,16 @@ elif args.i != '':
 		currentVersion = plugins[name][0]
 		if currentVersion > version:
 			print "A newer version is already installed"
+			with open('InstallResult','w') as d:
+				d.write("A newer version is already installed")
 		elif currentVersion == version:
 			print "This version is already installed"
+			with open('InstallResult','w') as d:
+				d.write("This version is already installed")
 		else:
 			print "Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again"
+			with open('InstallResult','w') as d:
+				d.write("Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again")
 			#Install Files
 	except:
 		for each in plugins:
@@ -207,6 +239,8 @@ elif args.i != '':
 				if exe in cmdfile and exe != 'NONE' and len(plugins[each][1]) != 1 and install == True:
 					print "This plugin has a conflict with",each
 					print "Please rename the executable"
+					with open('InstallResult','w') as d:
+						d.write("This plugin has a conflict with",each)
 					install = False
 		if install != False:
 			print name
@@ -220,7 +254,11 @@ elif args.i != '':
 					print each,
 				print
 			print
-			if raw_input("Are you sure you want to continue? [Y/N]").lower() == 'y':
+			if force == False:
+				go = raw_input("Are you sure you want to continue? [Y/N]").lower() == 'y'
+			else:
+				go = True
+			if go == True:
 				try:
 					dictionary = open(root+'Recognition/modes/main.dic')
 					text = dictionary.read()
@@ -254,10 +292,10 @@ elif args.i != '':
 					try:
 						for c in configs:
 							try:
-								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+								os.system("mkdir "+configRootFolder+name+"/")
 							except:
 								pass
-							confile = open(root+"Recognition/config/"+name+"/"+c,'w')
+							confile = open(configRootFolder+name+"/"+c,'w')
 							confile.write(tar.extractfile(c).read())
 							confile.close()
 							print "File Installed to config",c
@@ -274,10 +312,10 @@ elif args.i != '':
 					try:
 						for c in config:
 							try:
-								os.system("mkdir "+root+"Recognition/config/"+name+"/")
+								os.system("mkdir "+configRootFolder+name+"/")
 							except:
 								pass
-							shutil.copy(src+c,root+"Recognition/config/"+args.i+"/")
+							shutil.copy(src+c,configRootFolder+args.i+"/")
 						print "File Installed to Config",c
 					except:
 						print "Error Moving File To Config",c
@@ -301,7 +339,9 @@ elif args.i != '':
 							print "Error Moving File"
 					for exe in cmdfile:
 						os.system("chmod +x "+root+"Recognition/bin/"+exe)
-				con = sql.connect(root+"Recognition/config/plugins.db")
+				con = sql.connect(pluginDataBaseLocation)
+				with open('InstallResult','w') as d:
+					d.write(name+" Installed")
 				with con:
 					cur = con.cursor()
 					sqlDefault(cur)
@@ -343,7 +383,7 @@ elif args.r != '':
 	except:
 		print "Dictionary Not Found"
 	found = False
-	con = sql.connect(root+"Recognition/config/plugins.db")
+	con = sql.connect(pluginDataBaseLocation)
 	with con:
 		cur = con.cursor()
 		sqlDefault(cur)
@@ -372,15 +412,20 @@ elif args.r != '':
 							print "Couldn't remove "+dic+" from modes"
 				for c in configs:
 						try:
-							os.remove(root+"Recognition/config/"+args.r+"/"+c)
+							os.remove(configRootFolder+args.r+"/"+c)
 							print 'Removed from Config',c
 						except:
 							print "Couldn't remove "+c+" from config"
+				os.system("rm "+configRootFolder+args.r+" -r")
 				cur.execute("DELETE FROM plugins WHERE id = "+str(pid))
 				print name,"Uninstalled"
+				with open('InstallResult','w') as d:
+					d.write(name+" Uninstalled")
 				found = True
 
 	if found == False:
 		print "Plugin Not Installed"
+		with open('InstallResult','w') as d:
+			d.write("Plugin Not Installed")
 else:
 	print "No Action Supplied"

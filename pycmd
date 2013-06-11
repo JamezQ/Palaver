@@ -21,6 +21,11 @@ if ps auxww |grep -v grep |grep osd_server > /dev/null 2>&1;then
     : # we are good, the server is there
 else # otherwise start it
     ./Microphone/osd_server.py &
+fi  
+if ps auxww |grep -v grep |grep indicator_server.py > /dev/null 2>&1;then
+    : # we are good, the server is there
+else # otherwise start it
+    ./Microphone/indicator_server.py &
 fi    
 # This should be run from the base dir.
 cd Microphone
