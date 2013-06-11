@@ -1,9 +1,9 @@
 speech.flac
-indicator.pid
-osd.pid
-speech.pid
 result.json
 MODE
+
+#Process IDs
+*.pid
 
 # Object files
 *.o
