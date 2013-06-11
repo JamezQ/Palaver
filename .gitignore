@@ -1,3 +1,11 @@
+speech.flac
+result.json
+MODE
+tmp.sp
+
+#Process IDs
+*.pid
+
 # Object files
 *.o
 
