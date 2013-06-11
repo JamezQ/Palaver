@@ -32,7 +32,6 @@ if args.p != '':
 	f = urllib2.urlopen("http://palaver.bmandesigns.com/functions.php?f=download&t=name&s="+args.p)
 	with open('tmp.sp', "wb") as local_file:
 		local_file.write(f.read())
-	print "Bam"
 	installGo = True
 	
 
@@ -41,8 +40,6 @@ encCode = 5
 home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
 
 pluginDataBaseLocation = home + "/.palaver.d/plugins.db"
-
-print pluginDataBaseLocation
 
 configRootFolder = home+"/.palaver.d/config/"
 
@@ -127,7 +124,6 @@ elif args.info != '':
 					print "\t\t"+line.replace('\n','')
 			dictionary.close()
 elif args.i != '':
-	print args.i
 	while installGo == False:
 		time.sleep(0.1)
 	filename = args.i

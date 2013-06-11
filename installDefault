@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+import os, sys, pygtk,time
+root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+pygtk.require('2.0')
+import gtk
+from subprocess import call
+if gtk.pygtk_version < (2,3,90):
+   print "PyGtk 2.3.90 or later required for this example"
+   raise SystemExit
+
+class EntryExample:
+	def pluginToggle(self, widget, plugin):
+		x = 0
+		for e in self.plugins:
+			if e == plugin:
+				self.plugins.pop(x)
+				return 1
+			x = x + 1
+		self.plugins.append(plugin)
+
+	def install(self,widget):
+		print "Install!"
+		print self.plugins
+		for w in self.checks:
+			self.vbox.remove(w)
+		self.vbox.set_border_width(10)
+		self.window.resize(20,20)
+		self.vbox.add(self.pbar)
+		self.pbar.show()
+		self.vbox.show()
+		self.window.show()
+		for e in self.plugins:
+			os.system("./plugins -p "+e+" -f")
+	def __init__(self):
+		self.plugins = ['FileBrowser','InternetSearch','MediaControl','DateDisplay','GoogleMaps','NoteToSelf','UserInformation']
+		self.checks = []
+		# create a new window
+		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window.set_default_size(200,400)
+		self.window.set_title("Palaver Default Plugins Installation")
+		self.window.connect("delete_event", lambda w,e: gtk.main_quit())
+		#window.set_logo(gtk.gdj.pixbuf_new_from_file("Microphone/Indicator/mic.png"))
+		self.pbar = gtk.Label("Done")
+		self.vbox = gtk.VBox(False, 0)
+		self.window.add(self.vbox)
+		self.vbox.show()
+
+		for e in self.plugins:			  
+			check = gtk.CheckButton(e)
+			check.set_active(True)
+			check.connect("toggled", self.pluginToggle, e)
+			self.checks.append(check)
+			self.vbox.add(check)	
+			check.show()
+								   
+		button = gtk.Button("Install")
+		self.checks.append(button)
+		button.connect("clicked", self.install)
+		self.vbox.pack_start(button, True, True, 0)
+		button.set_flags(gtk.CAN_DEFAULT)
+		button.grab_default()
+		button.show()
+		self.window.show()
+
+def main():
+	gtk.main()
+	return 0
+
+if __name__ == "__main__":
+	EntryExample()
+	main()
