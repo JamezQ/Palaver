@@ -52,11 +52,11 @@ while True:
             i = 0
             continue
         if i < 32:
-            n.update(transText("Recording"),
+            n.update(transText("Listening"),
                      "",
                      PWD+"/Recording/thumbs/rec"+ str((i+1))+".gif")
         if i >= 32:
-            n.update(transText("Recording"),
+            n.update(transText("Listening"),
                      "",
                      PWD+"/Recording/thumbs/rec"+ str(64-i)+".gif")
         n.show()
