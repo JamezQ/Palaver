@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import os, sys, pygtk,time
+import os, sys, pygtk,time,subprocess
 root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
+home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
 pygtk.require('2.0')
 import gtk
 from subprocess import call
@@ -67,5 +68,12 @@ def main():
 	return 0
 
 if __name__ == "__main__":
+	res = subprocess.Popen("zenity --forms --add-entry='First Name' --add-entry='Last Name' --add-entry='Email' --add-entry='Language' --text='User Information' --title='Palaver User Configurationon'", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+	res = res.split("|")
+	with open(home+"/.palaver.d/UserInfo",'w') as data:
+		data.write("FIRST="+res[0])
+		data.write("\nLAST="+res[1])
+		data.write("\nEMAIL="+res[2])
+		data.write("\nLANG="+res[3])
 	EntryExample()
 	main()

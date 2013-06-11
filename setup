@@ -14,6 +14,5 @@ make
 cd ..
 mkdir $HOME/.palaver.d/
 cp Recognition/config/BlankInfo $HOME/.palaver.d/UserInfo
-xdg-open $HOME/.palaver.d/UserInfo
 ./installDefault
 echo "Done, you will have to setup the hotkey yourself."
