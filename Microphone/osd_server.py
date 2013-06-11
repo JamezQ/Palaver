@@ -37,9 +37,7 @@ def transText(text):
 
 pynotify.init("Speech Recognition")
 
-n = pynotify.Notification(transText("Please wait"),
-                          "",
-                          PWD+"/Not_Ready/stop.png")
+n = pynotify.Notification(transText("Palaver Speech Ready"),"")
 # If we start up the server in a script, it should first show
 # not ready.
 n.show()

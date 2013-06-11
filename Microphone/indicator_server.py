@@ -22,6 +22,11 @@ class indicator:
 		self.p_item.show()
 		self.menu.append(self.p_item)
 
+		self.r_item = gtk.MenuItem("Restart Servers")
+		self.r_item.connect("activate", self.restart)
+		self.r_item.show()
+		self.menu.append(self.r_item)
+
 		self.quit_item = gtk.MenuItem("Quit")
 		self.quit_item.connect("activate", self.quit)
 		self.quit_item.show()
@@ -33,6 +38,10 @@ class indicator:
 	def quit(self, widget):
 		sys.exit(0)
 	
+	def restart(self,widget):
+		os.chdir("../")
+		subprocess.call(["./restart"])
+
 	def install(self,widget):
 		os.chdir("../")
 		subprocess.call(["./install_gui"])
