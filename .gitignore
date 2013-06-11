@@ -1,3 +1,10 @@
+speech.flac
+indicator.pid
+osd.pid
+speech.pid
+result.json
+MODE
+
 # Object files
 *.o
 
