@@ -2,12 +2,7 @@
 
 # Setup speech recognition for the person.
 
-if [ "$(whoami)" != "root" ]; then
-	echo "Sorry, Please run as root."
-	exit 1
-fi
-
-sudo apt-get install sox python-argparse wget espeak xautomation xvkbd -y
+gksu -u root "apt-get install sox python-argparse wget espeak xautomation xvkbd -y"
 
 DIR="$(pwd)"
 
@@ -19,9 +14,6 @@ make
 cd ..
 mkdir $HOME/.palaver.d/
 cp Recognition/config/BlankInfo $HOME/.palaver.d/UserInfo
-nano $HOME/.palaver.d/UserInfo
-
+xdg-open $HOME/.palaver.d/UserInfo
+./installDefault
 echo "Done, you will have to setup the hotkey yourself."
-
-
-
