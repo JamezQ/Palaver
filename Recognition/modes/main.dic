@@ -1,3 +1,66 @@
+#PLUGIN: ScreenPlugin
+<s,S>creen <O,o>n
+    screen "on"
+<s,S>creen <O,o>ff
+    screen "off"
+<L,l>ock <s,S>creen
+    screen "off"
+<U,n>lock <s,S>creen
+    screen "on"#END
+#PLUGIN: UserInformation
+<<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
+  UserInformation ip
+<<w,W>hat's,<w,W>hats,<w,W>hat is> my name
+  UserInformation name
+#END
+#PLUGIN: GoogleMaps
+where is (LINE place)
+  gmaps "https://maps.google.com/maps?q=$place$"
+#END
+#PLUGIN: dateDisplay
+<<<w,W>hat is,<w,W>hat's> the date,<<w,W>hat is,<w,W>hat's> the date today>
+  dateDisplay
+#END
+#PLUGIN: MediaControl
+play (LINE song)
+  mediaControl "$song$"
+<v,V>olume <d,D>own
+  mediaControl volume_down
+<v,V>olume <u,U>p
+  mediaControl volume_up
+<m,M>ute
+  mediaControl volume_mute
+pause
+  mediaControl pause
+play
+  mediaControl play
+previous
+  mediaControl prev
+next
+  mediaControl next
+#END
+#PLUGIN: InternetSearch
+<<s,S>earch,<g,G>oogle> (LINE question)
+  goto "http://www.google.com/search?q=$question$"
+<<w,W>olfram,wolf RAM>[ <a,A>lpha] (LINE question)
+  goto "www.wolframalpha.com/input/?i=$question$"
+<y,Y>ou<t,T>ube (LINE video)
+  goto "https://www.youtube.com/results?search_query=$video$"
+#END
+#PLUGIN: FileBrowser
+open documents
+  file-browser 'xdg-user-dir DOCUMENTS | xargs nautilus'
+open music
+  file-browser 'xdg-user-dir MUSIC | xargs nautilus'
+open home
+  file-browser 'xdg-user-dir | xargs nautilus'
+open videos
+  file-browser 'xdg-user-dir VIDEOS | xargs nautilus'
+open pictures
+  file-browser 'xdg-user-dir PICTURES | xargs nautilus'
+open downloads
+  file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'
+#END
 <say,speak> (LINE words)
   say "$words$"
 <type,write> (LINE words)
