@@ -20,11 +20,19 @@ parser.add_argument('-p', metavar='name', type=str,help='Install a plugin from t
 parser.add_argument('-info', metavar='plugin', type=str,help='Display info on a plugin',default="")
 parser.add_argument('-l', dest='listPlugins', action='store_true',default=False,help='List the installed plugins')
 parser.add_argument('-f', dest='force', action='store_true',default=False,help='Force installation with no confirmation.')
+parser.add_argument("-q",dest='quiet',action='store_true',default=False,help='Run the program with no output')
 args = parser.parse_args()
 listPlugins = args.listPlugins
 force = args.force
 
 installGo = True
+
+if args.quiet:
+	args.force = True
+
+def print2(text):
+	if args.quiet == False:
+		print text
 
 if args.p != '':
 	installGo = False
@@ -80,10 +88,10 @@ if listPlugins == True:
 		for line in pluginList:
 			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
 			actions=decrypt(actions,encCode)
-			print "\t"+name,"-",version
+			print2("\t"+name+" - "+version)
 			actions = eval(actions)
 			for each in actions:
-				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
+				print2("\t\t"+each[0]+"\t\t"+each[1].replace('\n',''))
 elif args.info != '':
 	con = sql.connect(pluginDataBaseLocation)
 	with con:
@@ -94,18 +102,18 @@ elif args.info != '':
 		for line in pluginList:
 			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
 			actions=decrypt(actions,encCode)
-			print "\t"+name,"-",version
+			print2 ("\t"+name,"-",version)
 		if name == args.info:
-			print name
-			print "\tAuthor:",author
-			print "\tVersion:",version
-			print "\tCommand(s):",str(cmdfile)
-			print "\tDictionaries:",str(dictionaries)
-			print "\tActions:"
+			print2 (name)
+			print2 ("\tAuthor:",author)
+			print2 ("\tVersion:",version)
+			print2 ("\tCommand(s):",str(cmdfile))
+			print2 ("\tDictionaries:",str(dictionaries))
+			print2 ("\tActions:")
 			actions = eval(actions)
 			for each in actions:
-				print "\t\t"+each[0]+"\t\t"+each[1].replace('\n','')
-			print "\tCommands:"
+				print2 ("\t\t"+each[0]+"\t\t"+each[1].replace('\n',''))
+			print2 ("\tCommands:")
 			dictionary = open(pluginDataBaseLocation)
 			adding = False
 			for line in dictionary:
@@ -121,7 +129,7 @@ elif args.info != '':
 						adding = False
 						add = False
 				if add == True:
-					print "\t\t"+line.replace('\n','')
+					print2 ("\t\t"+line.replace('\n',''))
 			dictionary.close()
 elif args.i != '':
 	while installGo == False:
@@ -144,7 +152,7 @@ elif args.i != '':
 		try:
 			data = open(filename)
 		except:
-			print 'Invalid File - not found'
+			print2 ('Invalid File - not found')
 	recActions = False
 	multiDesc = False
 	actions = []
@@ -217,15 +225,15 @@ elif args.i != '':
 	try:
 		currentVersion = plugins[name][0]
 		if currentVersion > version:
-			print "A newer version is already installed"
+			print2 ("A newer version is already installed")
 			with open('InstallResult','w') as d:
 				d.write("A newer version is already installed")
 		elif currentVersion == version:
-			print "This version is already installed"
+			print2 ("This version is already installed")
 			with open('InstallResult','w') as d:
 				d.write("This version is already installed")
 		else:
-			print "Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again"
+			print2 ("Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again")
 			with open('InstallResult','w') as d:
 				d.write("Updating Files Has Not Yet Been Added, please remove the old version with -r and then install again")
 			#Install Files
@@ -233,21 +241,21 @@ elif args.i != '':
 		for each in plugins:
 			for exe in plugins[each][1]:
 				if exe in cmdfile and exe != 'NONE' and len(plugins[each][1]) != 1 and install == True:
-					print "This plugin has a conflict with",each
-					print "Please rename the executable"
+					print2 ("This plugin has a conflict with "+each)
+					print2 ("Please rename the executable")
 					with open('InstallResult','w') as d:
-						d.write("This plugin has a conflict with",each)
+						d.write("This plugin has a conflict with "+each)
 					install = False
 		if install != False:
-			print name
+			print2 (name)
 			print
-			print description
+			print2 (description)
 			if type(configs) != list:
 				configs = eval(configs)
 			if len(depend) != 0:
-				print "WARNING: THIS PLUGIN REQUIRES:"
+				print2 ("WARNING: THIS PLUGIN REQUIRES:")
 				for each in depend:
-					print each,
+					print2 (each)
 				print
 			print
 			if force == False:
@@ -272,19 +280,19 @@ elif args.i != '':
 						dictionary.write("#END\n")
 						dictionary.write(text)
 					except:
-						print "Error Installing Plugin In main.dic"
+						print2 ("Error Installing Plugin In main.dic")
 					dictionary.close()
 				except:
-					print "Dictionary Not Found"
+					print2 ("Dictionary Not Found")
 				if filename.endswith('.sp'):
 					try:
 						for dic in dictionaries:
 							binfile = open(root+"Recognition/modes/"+dic,'w')
 							binfile.write(tar.extractfile(dic).read())
 							binfile.close()
-							print "File Installed to modes",dic
+							print2 ("File Installed to modes "+dic)
 					except:
-						print "Error Installing to modes",dic
+						print2 ("Error Installing to modes "+dic)
 					try:
 						for c in configs:
 							try:
@@ -294,17 +302,17 @@ elif args.i != '':
 							confile = open(configRootFolder+name+"/"+c,'w')
 							confile.write(tar.extractfile(c).read())
 							confile.close()
-							print "File Installed to config",c
+							print2 ("File Installed to config "+c)
 					except:
-						print "Error Installing to config",c
+						print2 ("Error Installing to config "+c)
 				else:
 					src = ''.join([e+'/' for e in filename.split('/')[0:-1]])
 					try:
 						for dic in dictionaries:
 							shutil.copy(src+exe,root+"Recognition/modes/")
-						print "File Installed to Modes",dic
+						print2 ("File Installed to Modes "+dic)
 					except:
-						print "Error Moving File to Modes",dic
+						print2 ("Error Moving File to Modes "+dic)
 					try:
 						for c in config:
 							try:
@@ -312,9 +320,9 @@ elif args.i != '':
 							except:
 								pass
 							shutil.copy(src+c,configRootFolder+args.i+"/")
-						print "File Installed to Config",c
+						print2 ("File Installed to Config "+c)
 					except:
-						print "Error Moving File To Config",c
+						print2 ("Error Moving File To Config "+c)
 				if cmdfile != "NONE":
 					if filename.endswith('.sp'):
 						try:
@@ -322,17 +330,17 @@ elif args.i != '':
 								binfile = open(root+"Recognition/bin/"+exe,'w')
 								binfile.write(tar.extractfile(exe).read())
 								binfile.close()
-								print "File Installed to Bin",exe
+								print2 ("File Installed to Bin "+exe)
 						except:
-							print "Error Installing to Bin",exe
+							print2 ("Error Installing to Bin "+exe)
 					else:
 						src = ''.join([e+'/' for e in filename.split('/')[0:-1]])
 						try:
 							for exe in cmdfile:
 								shutil.copy(src+exe,root+"Recognition/bin/")
-							print "File Installed to Bin",exe
+							print2 ("File Installed to Bin "+exe)
 						except:
-							print "Error Moving File"
+							print2 ("Error Moving File")
 					for exe in cmdfile:
 						os.system("chmod +x "+root+"Recognition/bin/"+exe)
 				con = sql.connect(pluginDataBaseLocation)
@@ -344,13 +352,13 @@ elif args.i != '':
 					execline = "INSERT INTO plugins VALUES(NULL, \""+name+"\", \""+str(version)+"\", \""+author+"\", \""+str(cmdfile)+"\", \""+str(dictionaries)+"\", \""+encrypt(str(actions),encCode)+"\", \""+str(configs)+"\")"
 					cur.execute(execline)
 			else:
-				print "Quiting Installation"
+				print2 ("Quiting Installation")
 elif args.r != '':
 	pluginName = args.r
 	try:
 		pluginList = open(root+'plugins')
 	except:
-		print "Plugins Library Not Found"
+		print2 ("Plugins Library Not Found")
 	good = False
 	try:
 		dictionary = open(root+'Recognition/modes/main.dic')
@@ -374,10 +382,10 @@ elif args.r != '':
 			dictionary = open(root+'Recognition/modes/main.dic','w')
 			dictionary.write(text)
 		except:
-			print "Error Installing Plugin In main.dic"
+			print2 ("Error Installing Plugin In main.dic")
 		dictionary.close()
 	except:
-		print "Dictionary Not Found"
+		print2 ("Dictionary Not Found")
 	found = False
 	con = sql.connect(pluginDataBaseLocation)
 	with con:
@@ -397,31 +405,31 @@ elif args.r != '':
 					for exe in cmdfile:
 						try:
 							os.remove(root+"Recognition/bin/"+exe)
-							print "Removed from Bin",exe
+							print2 ("Removed from Bin "+exe)
 						except:
-							print "Couldn't remove "+exe+" from bin"
+							print2 ("Couldn't remove "+exe+" from bin")
 				for dic in dictionaries:
 						try:
 							os.remove(root+"Recognition/modes/"+dic)
-							print 'Removed from Modes',dic
+							print2 ('Removed from Modes '+dic)
 						except:
-							print "Couldn't remove "+dic+" from modes"
+							print2 ("Couldn't remove "+dic+" from modes")
 				for c in configs:
 						try:
 							os.remove(configRootFolder+args.r+"/"+c)
-							print 'Removed from Config',c
+							print2 ('Removed from Config '+c)
 						except:
-							print "Couldn't remove "+c+" from config"
+							print2 ("Couldn't remove "+c+" from config")
 				os.system("rm "+configRootFolder+args.r+" -r")
 				cur.execute("DELETE FROM plugins WHERE id = "+str(pid))
-				print name,"Uninstalled"
+				print2 (name+" Uninstalled")
 				with open('InstallResult','w') as d:
 					d.write(name+" Uninstalled")
 				found = True
 
 	if found == False:
-		print "Plugin Not Installed"
+		print2 ("Plugin Not Installed")
 		with open('InstallResult','w') as d:
 			d.write("Plugin Not Installed")
 else:
-	print "No Action Supplied"
+	print2 ("No Action Supplied")

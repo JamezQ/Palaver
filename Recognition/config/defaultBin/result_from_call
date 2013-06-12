@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+
+# This module can accept many arguments. If the "" syntax is used, then the argument will be recognised as one,
+# else if no "" syntax is used, then the arguments will be recognised as different.
+# I did this to keep a steady syntax across all dictionaries
+
+import sys
+from subprocess import Popen
+
+args = sys.argv
+
+if args.__len__() < 2:
+    print("ERROR: Not enough arguments provided to result_from_call")
+    exit(1)
+
+args.pop(0)  # Remove script name
+
+try:
+    with open('Microphone/result', 'w') as result:
+        if args.__len__() == 1:  # If an item with "" was passed. I know this as it will be recognised as one argument
+            args = args[0].split()
+        response = Popen(args, stdout=result)  # Store all output in to result file
+except IOError as ioerr:
+    print("File could not be found: " + str(ioerr))
+
+

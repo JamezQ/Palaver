@@ -7,5 +7,6 @@
 if echo "$1" |egrep "^http" >/dev/null 2>&1;then
     xdg-open "$1" &
 else
-    xdg-open http://"$1&hl=$LANG" &
+    xdg-open http://"$1" &
 fi
+
