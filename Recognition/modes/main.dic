@@ -1,12 +1,17 @@
+#PLUGIN: ScreenPlugin
+<s,S>creen <O,o>n
+    screen "on"
+<s,S>creen <O,o>ff
+    screen "off"
+<L,l>ock <s,S>creen
+    screen "off"
+<U,n>lock <s,S>creen
+    screen "on"#END
 #PLUGIN: UserInformation
 <<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
   UserInformation ip
 <<w,W>hat's,<w,W>hats,<w,W>hat is> my name
   UserInformation name
-#END
-#PLUGIN: NoteToSelf
-note to self (LINE rest)
-  note_to_self "$rest$"
 #END
 #PLUGIN: GoogleMaps
 where is (LINE place)
@@ -56,137 +61,6 @@ open pictures
 open downloads
   file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'
 #END
-#PLUGIN: SettingsLaunch
-<a,A>ppearance <s,S>ettings
-  SettingsLaunch background
-<b,B>rightness <a,A>nd <l,L>ock
-  SettingsLaunch screen
-<k,K>eyboard <l,L>ayout
-  SettingsLaunch region
-<o,O>nline <a,A>ccounts
-  SettingsLaunch credentials
-<p,P>rivacy <s,S>ettings
-  SettingsLaunch activity-log-manager
-<b,B>luetooth <s,S>ettings
-  SettingsLaunch bluetooth
-<c,C>olor <s,S>ettings
-  SettingsLaunch color
-<d,D>isplay <s,S>ettings
-  SettingsLaunch display
-<k,K>eyboard <s,S>ettings
-  SettingsLaunch keyboard
-<m,M>ouse and <t,T>rackpad
-  SettomgsLaunch mouse
-<n,N>etwork <s,S>ettings
-  SettingsLaunch network
-<p,P>ower <s,S>ettings
-  SettingsLaunch power
-<s,S>ound <s,S>ettings
-  SettingsLaunch sound-nua
-<w,W>acom <t,T>ablet <s,S>ettings
-  SettingsLaunch wacom
-<b,B>ackup <s,S>ettings
-  SettingsLaunch deja-dup
-<c,C>omputer <d,D>etails
-  SettingsLaunch info
-<t,T>ime and <d,D>ate <s,S>ettings
-  SettingsLaunch indicator-datetime
-<u,U>niversal <a,A>ccess <s,S>ettings
-  SettingsLaunch universal-access
-<u,U>ser <a,A>ccounts
-  SettingsLaunch user-accounts
-#END
-#PLUGIN: UserInformation
-<<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
-  UserInformation ip
-<<w,W>hat's,<w,W>hats,<w,W>hat is> my name
-  UserInformation name
-#END
-#PLUGIN: Gmail
-<d,D>o <i,I> have new <mail,messages,email>
-  Gmail unread
-<o,O>pen my <email,mail>
-  Gmail open
-#END
-#PLUGIN: ChatBot
-<s,S>tart <t,T>alking
-  mode chatbot
-#END
-#PLUGIN: TotemPlugin
-<p,P>lay <v,V>ideo
-  totem '--play'
-<pause,POS> <v,V>ideo
-  totem '--pause'
-<n,N>ext <v,V>ideo
-  totem '--next'
-<p,P>revious <v,V>ideo
-  totem '--previous'
-#END
-#PLUGIN: SportsScores
-(WORD league) <s,S>cores
-  scores "$league$"
-#END
-#PLUGIN: ScreenPlugin
-<s,S>creen <O,o>n
-    screen "on"
-<s,S>creen <O,o>ff
-    screen "off"
-<L,l>ock <s,S>creen
-    screen "off"
-<U,n>lock <s,S>creen
-    screen "on"#END
-#PLUGIN: NoteToSelf
-note to self (LINE rest)
-  note_to_self "$rest$"
-#END
-#PLUGIN: MediaControl
-play (LINE song)
-  mediaControl "$song$"
-<v,V>olume <d,D>own
-  mediaControl volume_down
-<v,V>olume <u,U>p
-  mediaControl volume_up
-<m,M>ute
-  mediaControl volume_mute
-pause
-  mediaControl pause
-play
-  mediaControl play
-previous
-  mediaControl prev
-next
-  mediaControl next
-#END
-#PLUGIN: InternetSearch
-<<s,S>earch,<g,G>oogle> (LINE question)
-  goto "http://www.google.com/search?hl=en&q=$question$"
-<<w,W>olfram,wolf RAM>[ <a,A>lpha] (LINE question)
-  goto "www.wolframalpha.com/input/?i=$question$"
-<y,Y>ou<t,T>ube (LINE video)
-  goto "https://www.youtube.com/results?search_query=$video$"
-#END
-#PLUGIN: GoogleMaps
-where is (LINE place)
-  gmaps "https://maps.google.com.mx/maps?q=$place$"
-#END
-#PLUGIN: FileBrowser
-open documents
-  file-browser 'xdg-user-dir DOCUMENTS | xargs nautilus'
-open music
-  file-browser 'xdg-user-dir MUSIC | xargs nautilus'
-open home
-  file-browser 'xdg-user-dir | xargs nautilus'
-open videos
-  file-browser 'xdg-user-dir VIDEOS | xargs nautilus'
-open pictures
-  file-browser 'xdg-user-dir PICTURES | xargs nautilus'
-open downloads
-  file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'
-#END
-
-# Because of some changes this is not the full dictionary you saw in the video.
-# Look at archive/old_main.dic for that
-
 <say,speak> (LINE words)
   say "$words$"
 <type,write> (LINE words)
@@ -196,21 +70,17 @@ copy[ this]
 paste[ this]
   type '\\Cv'
 
-#play <a,A>merican <p,P>ie
-#  open 'rhythmbox ~/Music/american_pie.mp3'
-
 dictation mode
   mode dictation
+
+<o,O>pen <r,R>epository
+	goto "http://palaver.bmandesigns.com"
 
 <s,S>tatus
     result_from_call "git status"
 
 <g,G>o[ ]to (LINE site)
   goto "$site$"
-
-# Not working
-#play (LINE song)
-#  open 'find ~/Music/ -iname "*$song$*" -exec rhythmbox {} \;'
 
 open <g,G>oogle <c,C>hrome
   open 'google-chrome'

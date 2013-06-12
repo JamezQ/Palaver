@@ -1,4 +1,0 @@
-<exit,end,stop,leave> talking
-  mode main
-(LINE catch_all)
-  chatbot '$catch_all$'

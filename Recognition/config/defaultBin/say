@@ -1,4 +1,4 @@
 #!/bin/bash
 
-totem "$1"
+espeak "$1"
 

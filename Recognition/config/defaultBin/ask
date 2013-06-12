@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+
+if [ -z "$1" ];then
+    echo "You haven't asked anything!"
+    exit 1
+fi
+
+
+# This is kinda stealing resources, it's okay for testing, but lets
+# call MIT START and wolfram on our own.
+ANS_START="$(wget -qO- "http://qxip.net/bot/getstart.php?q=$1")"
+
+ANS_WOLF="$(wget -qO- "http://qxip.net/bot/getwolf.php?q=$1")"
+
+if [ ! -z "$ANS_START" ];then
+    echo "$ANS_START"
+fi
+
+if [ ! -z "$ANS_WOLF" ];then
+    echo "$ANS_WOLF"
+fi

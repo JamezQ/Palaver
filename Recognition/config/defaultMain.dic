@@ -1,0 +1,28 @@
+<say,speak> (LINE words)
+  say "$words$"
+<type,write> (LINE words)
+  type "$words$\\r"
+copy[ this]
+  type '\\Cc'
+paste[ this]
+  type '\\Cv'
+
+dictation mode
+  mode dictation
+
+<o,O>pen <r,R>epository
+	goto "http://palaver.bmandesigns.com"
+
+<s,S>tatus
+    result_from_call "git status"
+
+<g,G>o[ ]to (LINE site)
+  goto "$site$"
+
+open <g,G>oogle <c,C>hrome
+  open 'google-chrome'
+open does not exit
+  open 'bob'
+
+<<e,E>dit,<c,C>hange> <m,M>y <i,I>nfo
+  edit_details

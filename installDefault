@@ -31,9 +31,10 @@ class EntryExample:
 		self.vbox.show()
 		self.window.show()
 		for e in self.plugins:
-			os.system("./plugins -p "+e+" -f")
+			os.system("./plugins -p "+e+" -f -q")
+		gtk.main_quit()
 	def __init__(self):
-		self.plugins = ['FileBrowser','InternetSearch','MediaControl','DateDisplay','GoogleMaps','NoteToSelf','UserInformation']
+		self.plugins = ['FileBrowser','InternetSearch','MediaControl','DateDisplay','GoogleMaps','NoteToSelf','UserInformation','ScreenPlugin']
 		self.checks = []
 		# create a new window
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)

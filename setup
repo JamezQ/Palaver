@@ -12,7 +12,15 @@ touch Recognition/dictionary.c
 cd Recognition
 make
 cd ..
+rm Recognition/modes/main.dic
+rm Recognition/bin/ -r
+rm $HOME/.palaver.d/ -r
 mkdir $HOME/.palaver.d/
+cp Recognition/config/defaultBin Recognition/bin -r
+touch $HOME/.palaver.d/UserInfo
 cp Recognition/config/BlankInfo $HOME/.palaver.d/UserInfo
+touch Recognition/modes/main.dic
+cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 ./installDefault
+nohup Recognition/bin/goto 'http://palaver.bmandesigns.com/thanks' "nohup.out" &
 echo "Done, you will have to setup the hotkey yourself."

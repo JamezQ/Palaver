@@ -19,7 +19,10 @@ def transText(text):
 			line = each.replace('\n','')
 			if line.startswith("LANG="):
 				language = line.replace("LANG=","").replace(" ","")
-	if language == "en":
+	try:
+		if language == "en":
+			return text
+	except:
 		return text
 	else:
 		f1 = open("Translations/"+language)
