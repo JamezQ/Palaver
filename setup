@@ -22,5 +22,5 @@ cp Recognition/config/BlankInfo $HOME/.palaver.d/UserInfo
 touch Recognition/modes/main.dic
 cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 ./installDefault
-Recognition/bin/goto "http://palaver.bmandesigns.com/thanks"
+nohup Recognition/bin/goto 'http://palaver.bmandesigns.com/thanks' "nohup.out" &
 echo "Done, you will have to setup the hotkey yourself."

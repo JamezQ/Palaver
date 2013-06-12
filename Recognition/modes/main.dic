@@ -73,6 +73,9 @@ paste[ this]
 dictation mode
   mode dictation
 
+<o,O>pen <r,R>epository
+	goto "http://palaver.bmandesigns.com"
+
 <s,S>tatus
     result_from_call "git status"
 
