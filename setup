@@ -14,7 +14,9 @@ make
 cd ..
 rm Recognition/modes/main.dic
 rm Recognition/bin/ -r
-rm $HOME/.palaver.d/ -r
+rm $HOME/.palaver.d/plugins.db
+rm $HOME/.palaver.d/UserInfo
+rm $HOME/.palaver.d/configs -r
 mkdir $HOME/.palaver.d/
 cp Recognition/config/defaultBin Recognition/bin -r
 touch $HOME/.palaver.d/UserInfo

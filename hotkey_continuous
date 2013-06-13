@@ -1,27 +1,17 @@
-#!/bin/bash
+#!/usr/bin/python
 
-# This is too hard, I give up, for now.
-# I want to be able to continuously put in commands
-# 
-# However this is hard, one way to do it I realized.
-# is to record the time the normal recording starts
-# then record the time the sound profiled one starts
-# and then simply trim that time from the normal one
+import os
+import subprocess
 
-# How it will WORK
-# 1 'follow' command
-# 1 recording command.
-# The recording command follows the 'follow' command, and ends when it ends,
-# later it will trim what it trimed.
-
-# Starts = Look for file size
-# End = command ends.
-
-# Possible good follow command
-# rec speech.wav trim 0.2 noisered noise.prof 0.1 silence 1 0.1 1% 1 1.0 1%
-#                      ^
-#                      |
-#         The trim removes an initial pop, they are common.
-
-# Use date %s at the start and end then subtract
-# to find out how much you need to trim the real audio file
+while True:
+	if os.path.isfile("Microphone/pycmd_nocmd"):
+		os.system("rec speech.flac silence 1 0.1 0.1% 1 0.5 0.1%")
+		p = subprocess.Popen(['./send_speech', 'speech.flac'], stdout=subprocess.PIPE, 
+                                       stderr=subprocess.PIPE)
+		while(True):
+			state = p.poll() #returns None while subprocess is running
+			out = p.stdout.readline()
+			if(state is not None):
+				break
+		print "Out:",out
+		os.system("./recognize \""+str(out)+"\"")
