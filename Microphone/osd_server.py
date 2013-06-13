@@ -45,89 +45,96 @@ n = pynotify.Notification(transText("Palaver Speech Ready"),"")
 # not ready.
 n.show()
 
+updateCount = 50
+
 while True:
-    # To make everything silent
-    while os.path.exists("silence"):
-        sleep(.1)
-    i = 0
-    while os.path.exists("pycmd_record"):
-        if i >=64:
-            i = 0
-            continue
-        if i < 32:
-            n.update(transText("Listening"),
-                     "",
-                     PWD+"/Recording/thumbs/rec"+ str((i+1))+".gif")
-        if i >= 32:
-            n.update(transText("Listening"),
-                     "",
-                     PWD+"/Recording/thumbs/rec"+ str(64-i)+".gif")
-        n.show()
-        i += 8
-        time.sleep(.1)
-    i = 0
-    while os.path.exists("pycmd_wait"):
-        n.update(transText("Performing recognition"),
-                 "",
-                 PWD+"/Waiting/wait-"+str(i)+".png")
-        n.show()
-        time.sleep(.1)
-        i += 1;
-        if i > 17:
-            i = 0
-    i = 0
-    while os.path.exists("pycmd_done"):
-        n.update(transText("Done"),
-                 " ",
-                 " ")
-        n.show()
-        try:
-            os.rename("pycmd_done","pycmd_nocmd")
-        except:
-            pass
-    i = 0
-    while os.path.exists("pycmd_result"):
-        f = open("result");
-       
-        title = transText(f.readline())
-     	print title
-        image = f.readline()
-        
-        tmp = f.readline()
-        
-        body = ""
-        while tmp != '':
-            body += image
-            image = tmp
-            tmp = f.readline()
-            
-        if title == '\n' or title == '':
-            title = " "
-        if body == '\n' or body == '':
-            body = " "
-        else:
-            if body[-1:] == '\n':
-                body = body[:-1]
-        if image == '\n' or image == '':
-            image = " "
-        else:
-            if image[-1:] == '\n':
-                image = image[:-1]
-          
-        n.update(title,body,image)
-        n.show()
-        try:
-            os.rename("pycmd_result","pycmd_nocmd")
-        except:
-            pass
-    while os.path.exists("pycmd_stop"):
-    
-        n.update(transText("Please wait"),
-                 "",
-                 PWD+"/Not_Ready/stop.png")
-        n.show()
-        try:
-            os.rename("pycmd_stop","pycmd_nocmd")
-        except:
-            pass
-    time.sleep(.1)
+	if updateCount == 50:
+		os.chdir("../")
+		os.system("./pm")
+		os.chdir("Microphone")
+		updateCount = 0
+	while os.path.exists("silence"):
+		sleep(.1)
+	i = 0
+	while os.path.exists("pycmd_record"):
+		if i >=64:
+			i = 0
+			continue
+		if i < 32:
+			n.update(transText("Listening"),
+					 "",
+					 PWD+"/Recording/thumbs/rec"+ str((i+1))+".gif")
+		if i >= 32:
+			n.update(transText("Listening"),
+					 "",
+					 PWD+"/Recording/thumbs/rec"+ str(64-i)+".gif")
+		n.show()
+		i += 8
+		time.sleep(.1)
+	i = 0
+	while os.path.exists("pycmd_wait"):
+		n.update(transText("Performing recognition"),
+				 "",
+				 PWD+"/Waiting/wait-"+str(i)+".png")
+		n.show()
+		time.sleep(.1)
+		i += 1;
+		if i > 17:
+			i = 0
+	i = 0
+	while os.path.exists("pycmd_done"):
+		n.update(transText("Done"),
+				 " ",
+				 " ")
+		n.show()
+		try:
+			os.rename("pycmd_done","pycmd_nocmd")
+		except:
+			pass
+	i = 0
+	while os.path.exists("pycmd_result"):
+		f = open("result");
+	   
+		title = transText(f.readline())
+	 	print title
+		image = f.readline()
+		
+		tmp = f.readline()
+		
+		body = ""
+		while tmp != '':
+			body += image
+			image = tmp
+			tmp = f.readline()
+			
+		if title == '\n' or title == '':
+			title = " "
+		if body == '\n' or body == '':
+			body = " "
+		else:
+			if body[-1:] == '\n':
+				body = body[:-1]
+		if image == '\n' or image == '':
+			image = " "
+		else:
+			if image[-1:] == '\n':
+				image = image[:-1]
+		  
+		n.update(title,body,image)
+		n.show()
+		try:
+			os.rename("pycmd_result","pycmd_nocmd")
+		except:
+			pass
+	while os.path.exists("pycmd_stop"):
+	
+		n.update(transText("Please wait"),
+				 "",
+				 PWD+"/Not_Ready/stop.png")
+		n.show()
+		try:
+			os.rename("pycmd_stop","pycmd_nocmd")
+		except:
+			pass
+	time.sleep(.1)
+	updateCount = updateCount + 1
