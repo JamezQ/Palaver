@@ -26,4 +26,5 @@ if id > lastId:
 				print "Boom!"
 				data.write("LASTID="+str(id)+"\n")
 			else:
-				data.write(l+"\n")
+				if l != '\n':
+					data.write(l+"\n")
