@@ -48,9 +48,10 @@ n.show()
 updateCount = 50
 
 while True:
-	if updateCount == 50:
+	if updateCount == 300:
 		os.chdir("../")
 		os.system("./pm")
+		os.system("./update")
 		os.chdir("Microphone")
 		updateCount = 0
 	while os.path.exists("silence"):
