@@ -31,3 +31,7 @@ tmp.sp
 
 #Text editor's backup file
 *~
+
+#ignore intellij files
+.idea
+*.iml
