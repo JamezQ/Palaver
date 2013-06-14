@@ -1,3 +1,11 @@
+#PLUGIN: UnityDash
+dash (LINE search)
+  dash $search$
+#END
+#PLUGIN: SportsScores
+(WORD league) <s,S>cores
+  scores "$league$"
+#END
 #PLUGIN: ScreenPlugin
 <s,S>creen <O,o>n
     screen "on"

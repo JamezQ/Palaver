@@ -51,6 +51,9 @@ pluginDataBaseLocation = home + "/.palaver.d/plugins.db"
 
 configRootFolder = home+"/.palaver.d/config/"
 
+if not os.path.exists(configRootFolder):
+	os.system("mkdir "+configRootFolder)
+
 def sqlDefault(cur):
 	cur.execute("CREATE TABLE IF NOT EXISTS plugins(id INTEGER PRIMARY KEY, name TEXT, version TEXT, author TEXT, binFiles TEXT, dicts TEXT, actions TEXT, configs TEXT)")
 def encrypt(text,code):
