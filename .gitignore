@@ -2,6 +2,7 @@ speech.flac
 result.json
 MODE
 tmp.sp
+InstallResult
 
 #Process IDs
 *.pid
