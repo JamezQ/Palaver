@@ -38,5 +38,6 @@ if id > updateID:
 			else:
 				if l != '\n':
 					data.write(l+"\n")
+	os.system("./restart")
 else:
 	print "System Up To Date"
