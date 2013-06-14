@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import urllib2,os
+import urllib2,os,pynotify
 
 with open("CONFIG",'r') as data:
 		for l in data.read().split("\n"):
@@ -38,5 +38,9 @@ if id > updateID:
 			else:
 				if l != '\n':
 					data.write(l+"\n")
+	pynotify.init("Speech Recognition")
+	n = pynotify.Notification("Palaver Update","Palaver just successfully updated")
+	n.show()
+	os.system("./restart")
 else:
 	print "System Up To Date"
