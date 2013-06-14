@@ -38,6 +38,9 @@ if id > updateID:
 			else:
 				if l != '\n':
 					data.write(l+"\n")
+	pynotify.init("Speech Recognition")
+	n = pynotify.Notification("Palaver Update","Palaver just successfully updated")
+	n.show()
 	os.system("./restart")
 else:
 	print "System Up To Date"
