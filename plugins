@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='Install and remove Plugins.')
 parser.add_argument('-i', metavar='file', type=str,help='Install a plugin - plugin .sp or .info file',default="")
 parser.add_argument('-r', metavar='plugin', type=str,help='Remove the specified plugin',default="")
 parser.add_argument('-p', metavar='name', type=str,help='Install a plugin from the repo',default="")
-parser.add_argument('-info', metavar='plugin', type=str,help='Display info on a plugin',default="")
+parser.add_argument('-d', metavar='plugin', type=str,help='Display info on a plugin',default="")
 parser.add_argument('-l', dest='listPlugins', action='store_true',default=False,help='List the installed plugins')
 parser.add_argument('-f', dest='force', action='store_true',default=False,help='Force installation with no confirmation.')
 parser.add_argument("-q",dest='quiet',action='store_true',default=False,help='Run the program with no output')
@@ -95,7 +95,7 @@ if listPlugins == True:
 			actions = eval(actions)
 			for each in actions:
 				print2("\t\t"+each[0]+"\t\t"+each[1].replace('\n',''))
-elif args.info != '':
+elif args.d != '':
 	con = sql.connect(pluginDataBaseLocation)
 	with con:
 		cur = con.cursor()
@@ -105,35 +105,36 @@ elif args.info != '':
 		for line in pluginList:
 			pid,name,version,author,cmdfile,dictionaries,actions,configs = line
 			actions=decrypt(actions,encCode)
-			print2 ("\t"+name,"-",version)
-		if name == args.info:
-			print2 (name)
-			print2 ("\tAuthor:",author)
-			print2 ("\tVersion:",version)
-			print2 ("\tCommand(s):",str(cmdfile))
-			print2 ("\tDictionaries:",str(dictionaries))
-			print2 ("\tActions:")
-			actions = eval(actions)
-			for each in actions:
-				print2 ("\t\t"+each[0]+"\t\t"+each[1].replace('\n',''))
-			print2 ("\tCommands:")
-			dictionary = open(pluginDataBaseLocation)
-			adding = False
-			for line in dictionary:
-				if adding == False:
-					add = False
-					if line.startswith('#PLUGIN: '):
-						if line.replace('#PLUGIN: ','').replace('\n','') == args.info:
-							add = False
-							adding = True
-				else:
-					add = True
-					if line == "#END\n":
-						adding = False
+			#print2 ("\t"+name+" - "+version)
+		
+			if name == args.d:
+				print2 (name)
+				print2 ("\tAuthor: "+author)
+				print2 ("\tVersion: "+version)
+				print2 ("\tCommand(s) :"+str(cmdfile))
+				print2 ("\tDictionaries: "+str(dictionaries))
+				print2 ("\tActions:")
+				actions = eval(actions)
+				for each in actions:
+					print2 ("\t\t"+each[0]+"\t\t"+each[1].replace('\n',''))
+				print2 ("\tCommands:")
+				dictionary = open("Recognition/modes/main.dic")
+				adding = False
+				for line in dictionary:
+					if adding == False:
 						add = False
-				if add == True:
-					print2 ("\t\t"+line.replace('\n',''))
-			dictionary.close()
+						if line.startswith('#PLUGIN: '):
+							if line.replace('#PLUGIN: ','').replace('\n','') == args.d:
+								add = False
+								adding = True
+					else:
+						add = True
+						if line == "#END\n":
+							adding = False
+							add = False
+					if add == True:
+						print2 ("\t\t"+line.replace('\n',''))
+				dictionary.close()
 elif args.i != '':
 	while installGo == False:
 		time.sleep(0.1)
