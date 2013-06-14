@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, sys, pygtk,time,subprocess
+import os, sys, pygtk,time,subprocess,urllib2
 root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
 home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
 pygtk.require('2.0')
@@ -34,14 +34,18 @@ class EntryExample:
 			os.system("./plugins -p "+e+" -f -q")
 		gtk.main_quit()
 	def __init__(self):
-		self.plugins = ['FileBrowser','InternetSearch','MediaControl','DateDisplay','GoogleMaps','NoteToSelf','UserInformation','ScreenPlugin']
+		self.plugins = []
+		plugins = urllib2.urlopen("http://palaver.bmandesigns.com/functions.php?f=corePlugins").read().split("|#|")
+		for p in plugins:
+			if p != "":
+				self.plugins.append(p)
 		self.checks = []
 		# create a new window
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.set_default_size(200,400)
 		self.window.set_title("Palaver Default Plugins Installation")
 		self.window.connect("delete_event", lambda w,e: gtk.main_quit())
-		#window.set_logo(gtk.gdj.pixbuf_new_from_file("Microphone/Indicator/mic.png"))
+		#self.window.set_logo(gtk.gdj.pixbuf_new_from_file("Microphone/Indicator/mic.png"))
 		self.pbar = gtk.Label("Done")
 		self.vbox = gtk.VBox(False, 0)
 		self.window.add(self.vbox)
