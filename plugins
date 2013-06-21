@@ -347,6 +347,9 @@ elif args.i != '':
 							print2 ("Error Moving File")
 					for exe in cmdfile:
 						os.system("chmod +x "+root+"Recognition/bin/"+exe)
+					for c in configs:
+						if c.endswith(".conf") == False:
+							os.system("chmod +x "+home+"/.palaver.d/config/"+name+"/"+c)
 				con = sql.connect(pluginDataBaseLocation)
 				with open('InstallResult','w') as d:
 					d.write(name+" Installed")

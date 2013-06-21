@@ -1,3 +1,7 @@
+#PLUGIN: browser
+<<l,L>aunch,<o,O>pen,<s,S>tart> <b,B>rowser
+  browser start
+#END
 #PLUGIN: UnityDash
 dash (LINE search)
   dash $search$
