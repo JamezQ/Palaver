@@ -41,8 +41,11 @@ def transText(text):
 pynotify.init("Speech Recognition")
 
 n = pynotify.Notification(transText("Palaver Speech Ready"),"")
-# If we start up the server in a script, it should first show
-# not ready.
+
+# This line allows palaver to work even if the computer is suspending
+# screensavers. Such as when a fullscreen video is playing.
+n.set_urgency(pynotify.URGENCY_CRITICAL)
+
 n.show()
 
 updateCount = 50
