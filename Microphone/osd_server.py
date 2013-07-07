@@ -89,7 +89,7 @@ while True:
 	while os.path.exists("pycmd_done"):
 		n.update(transText("Done"),
 				 " ",
-				 " ")
+				 PWD+"/Done/done.png")
 		n.show()
 		try:
 			os.rename("pycmd_done","pycmd_nocmd")
