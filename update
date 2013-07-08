@@ -23,6 +23,7 @@ if id > updateID:
 	for f in files:
 		if f != '':
 			print f
+			os.system("mkdir "+os.path.dirname(f))
 			os.system("cp Updates/Palaver-master/"+f+" "+f)
 	os.system("rm Updates -r -f")
 	os.system("rm update.zip")
