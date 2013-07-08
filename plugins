@@ -163,6 +163,7 @@ elif args.i != '':
 	depend = []
 	dictionaries = []
 	description = ''
+	configs = []
 	for line in data:
 		if line.startswith("name"):
 			name = line.replace('name =','').replace(' ','').replace('\n','')
@@ -255,7 +256,10 @@ elif args.i != '':
 			print
 			print2 (description)
 			if type(configs) != list:
-				configs = eval(configs)
+				try:
+					configs = eval(configs)
+				except:
+					print "Error Loading Config Files"
 			if len(depend) != 0:
 				print2 ("WARNING: THIS PLUGIN REQUIRES:")
 				for each in depend:
