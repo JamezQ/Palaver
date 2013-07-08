@@ -1,6 +1,8 @@
-#PLUGIN: browser
-<<l,L>aunch,<o,O>pen,<s,S>tart> <b,B>rowser
-  browser start
+#PLUGIN: UserInformation
+<<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
+  UserInformation ip
+<<w,W>hat's,<w,W>hats,<w,W>hat is> my name
+  UserInformation name
 #END
 #PLUGIN: UnityDash
 dash (LINE search)
@@ -19,20 +21,6 @@ dash (LINE search)
     screen "off"
 <U,n>lock <s,S>creen
     screen "on"#END
-#PLUGIN: UserInformation
-<<w,W>hat's,<w,W>hats,<w,W>hat is> my <i,I><p,P>
-  UserInformation ip
-<<w,W>hat's,<w,W>hats,<w,W>hat is> my name
-  UserInformation name
-#END
-#PLUGIN: GoogleMaps
-where is (LINE place)
-  gmaps "https://maps.google.com/maps?q=$place$"
-#END
-#PLUGIN: dateDisplay
-<<<w,W>hat is,<w,W>hat's> the date,<<w,W>hat is,<w,W>hat's> the date today>
-  dateDisplay
-#END
 #PLUGIN: MediaControl
 play (LINE song)
   mediaControl "$song$"
@@ -59,6 +47,10 @@ next
 <y,Y>ou<t,T>ube (LINE video)
   goto "https://www.youtube.com/results?search_query=$video$"
 #END
+#PLUGIN: GoogleMaps
+where is (LINE place)
+  gmaps "https://maps.google.com/maps?q=$place$"
+#END
 #PLUGIN: FileBrowser
 open documents
   file-browser 'xdg-user-dir DOCUMENTS | xargs nautilus'
@@ -72,6 +64,14 @@ open pictures
   file-browser 'xdg-user-dir PICTURES | xargs nautilus'
 open downloads
   file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'
+#END
+#PLUGIN: dateDisplay
+<<<w,W>hat is,<w,W>hat's> the date,<<w,W>hat is,<w,W>hat's> the date today>
+  dateDisplay
+#END
+#PLUGIN: browser
+<<l,L>aunch,<o,O>pen,<s,S>tart> <b,B>rowser
+  browser start
 #END
 <say,speak> (LINE words)
   say "$words$"
