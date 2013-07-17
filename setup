@@ -1,8 +1,19 @@
 #!/bin/bash
 
 # Setup speech recognition for the person.
+# Do NOT run this script as root, because it can cause problems with files rights
 
-gksu -u root "apt-get install sox python-argparse wget espeak xautomation xvkbd -y"
+command="apt-get install sox python-argparse wget espeak xautomation xvkbd -y"
+
+if which "gksu"
+then
+    gksu -S "$command"
+elif which "kdesudo"
+then
+    kdesudo "$command"
+else
+    eval "sudo $command"
+fi
 
 DIR="$(pwd)"
 
