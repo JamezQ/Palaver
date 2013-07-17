@@ -17,8 +17,8 @@ def transText(text):
 	with open(home+"/.palaver.d/UserInfo") as f:
 		for each in f:
 			line = each.replace('\n','')
-			if line.startswith("LANG="):
-				language = line.replace("LANG=","").replace(" ","")
+			if line.startswith("LANGUAGE="):
+				language = line.replace("LANGUAGE=","").replace(" ","")
 	try:
 		if language == "en":
 			return text
