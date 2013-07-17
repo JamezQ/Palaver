@@ -1,10 +1,16 @@
 #!/bin/bash
 
-
 # This should change based on language.
 # lang=es or something.
 # Multiple results
 #URL="http://www.google.com/speech-api/v1/recognize?lang=en&client=chromium&maxresults=6"
+
+USER_DIR=$HOME/.palaver.d
+while read line           
+do           
+    export "$line"           
+done <$USER_DIR/UserInfo
+
 URL="https://www.google.com/speech-api/v1/recognize?lang=$LANGUAGE&client=chromium"
 
 if [ -z "$1" ];then
