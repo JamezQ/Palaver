@@ -27,6 +27,7 @@ if [ -e "speech.pid" ];then
     :
     done
     RESULT="$(./send_speech speech.flac)"
+    echo "$RESULT" > last_command.log
     ./recognize "$RESULT"
 
     # Only takes effect if a script did not use pycmd result
