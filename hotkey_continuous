@@ -1,17 +1,23 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
+import sys
 import os
-import subprocess
+from send_speech import Stt
+
+currentDir = os.path.dirname(os.path.realpath(__file__))
 
 while True:
-	if os.path.isfile("Microphone/pycmd_nocmd"):
-		os.system("rec speech.flac silence 1 0.1 0.1% 1 0.5 0.1%")
-		p = subprocess.Popen(['./send_speech', 'speech.flac'], stdout=subprocess.PIPE, 
-                                       stderr=subprocess.PIPE)
-		while(True):
-			state = p.poll() #returns None while subprocess is running
-			out = p.stdout.readline()
-			if(state is not None):
-				break
-		print "Out:",out
-		os.system("./recognize \""+str(out)+"\"")
+    if os.path.isfile(currentDir + '/Microphone/pycmd_nocmd'):
+        os.system("rec -r 16000 -b 16 speech.flac silence 1 0.1 0.1% 1 1.0 0.1%")
+        with open('speech.flac', 'r') as audio_file:
+            content = audio_file.read()
+        audio_file.closed
+
+        stt = Stt()
+        text = stt.speech_to_text(content)
+        if text:
+	        print 'Out:',text.encode('utf-8').strip()
+	        os.system(currentDir + "/recognize \"" + text.encode('utf-8').strip() + "\"")
+        else:
+            print 'No text was returned'
