@@ -8,8 +8,6 @@ with open("CONFIG",'r') as data:
 		for l in data.read().split("\n"):
 			if l.startswith("LASTID="):
 				lastId = l.replace("\n",'').replace("LASTID=",'')
-
-print lastId
 if int(id) > int(lastId):
 	pynotify.init("Speech Recognition")
 	n = pynotify.Notification(title,text)
