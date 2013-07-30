@@ -6,12 +6,9 @@ id,title,text = f.read().split("||")
 
 with open("CONFIG",'r') as data:
 		for l in data.read().split("\n"):
-			print l
 			if l.startswith("LASTID="):
 				lastId = l.replace("\n",'').replace("LASTID=",'')
-
-print lastId
-if id > lastId:
+if int(id) > int(lastId):
 	pynotify.init("Speech Recognition")
 	n = pynotify.Notification(title,text)
 	n.show()
@@ -19,11 +16,9 @@ if id > lastId:
 	with open("CONFIG",'r') as data:
 		for l in data.read().split("\n"):
 			lines.append(l)
-	print lines
 	with open("CONFIG",'w') as data:
 		for l in lines:
 			if l.startswith("LASTID="):
-				print "Boom!"
 				data.write("LASTID="+str(id)+"\n")
 			else:
 				if l != '\n':
