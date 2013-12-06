@@ -1,3 +1,11 @@
 #!/bin/bash
-
-xvkbd -text "$1"
+#Mapping characters
+text=$(echo ${1//ñ/\\[dead_tilde]n})
+text=$(echo ${text//á/\\[dead_acute]a})
+text=$(echo ${text//é/\\[dead_acute]e})
+text=$(echo ${text//í/\\[dead_acute]i})
+text=$(echo ${text//ó/\\[dead_acute]o})
+text=$(echo ${text//ú/\\[dead_acute]u})
+#TODO- search other languages to be mapped
+#send text
+xvkbd -text "$text"
